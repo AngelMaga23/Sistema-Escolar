@@ -1,0 +1,48 @@
+﻿2.1 Sistemas ERP
+   2.1.1 Definiciones
+   2.1.2 Tipos de ERP
+   2.1.3 Usos del sistema ERP
+
+2.2 Diseño Web
+   2.2.1 Html
+   2.2.2 Css
+    2.2.2.1 Bootstrap
+
+2.3 Desarrollo Web
+   2.3.1 Php
+      2.3.1.1 Historia
+      2.3.1.2 Definición
+      2.3.1.3 versiones
+
+   2.3.2 Framewrok Laravel
+      2.3.2.1 Patrones de diseño
+      2.3.2.2 Patron MVC
+        2.3.2.2.1 Modelo
+        2.3.2.2.2 Vista
+        2.3.2.2.3 Controlador
+      2.3.2.3 Blade
+  
+   2.3.3 Spatie
+   2.3.4 Maatwebsite
+   2.3.5 Dompdf
+   2.3.6 Yajra Datatables
+
+   2.3.7 Javascript
+        2.3.7.1 Ajax
+	2.3.7.2 Jquery
+	2.3.7.3 Sweetalert2
+
+2.4 Herramientas de desarrollo
+   2.4.1 Visual studio code
+   2.4.2 Plugins de desarrollo
+        2.4.2.1 Laravel blade
+	2.4.2.2 Laravel Blade Snippets
+	2.4.2.3 Php Intelephense
+	2.4.2.4 PHP IntelliSense
+	2.4.2.5 PHP Namespace Resolver
+
+2.5 Sistema gestor de base de datos
+   2.5.1 Mysql
+
+
+
