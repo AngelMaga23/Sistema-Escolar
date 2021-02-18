@@ -9,7 +9,7 @@ use App\Http\Controllers\ClaseController;
 use App\Http\Controllers\PerfilController;
 use App\Http\Controllers\AnuncioController;
 use App\Http\Controllers\TareaController;
-
+use App\Http\Controllers\ForoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -108,3 +108,13 @@ Route::get('tarea/{id}/edit',[TareaController::class, 'edit']);
 Route::post('guardar_tarea',[TareaController::class, 'store']);
 Route::post('update_tarea',[TareaController::class, 'update']);
 Route::post('tarea_delete', [TareaController::class, 'destroy']);
+
+/** Foro */
+Route::get('foro/{id}',[ForoController::class, 'index']);
+Route::post('foro_asig_index',[ForoController::class, 'index_foros']);
+Route::get('foro/{id}/create',[ForoController::class, 'create']);
+Route::get('foro/{id}/edit',[ForoController::class, 'edit']);
+
+Route::post('guardar_foro',[ForoController::class, 'store']);
+Route::post('update_foro',[ForoController::class, 'update']);
+Route::post('foro_delete', [ForoController::class, 'destroy']);

@@ -68,6 +68,16 @@ function message_succesfully_Publicacion()
    	});
 }
 
+function message_succesfully_Foro()
+{
+	swal({
+        title: "!Foro Agregado!",
+        text: "Haz click para continuar",
+        icon: "success",
+
+   	});
+}
+
 function message_succesfully_UpdatePublicacion()
 {
 	swal({
@@ -77,7 +87,15 @@ function message_succesfully_UpdatePublicacion()
 
    	});
 }
+function message_succesfully_UpdateForo()
+{
+	swal({
+        title: "!Foro Actualizado!",
+        text: "Haz click para continuar",
+        icon: "success",
 
+   	});
+}
 function message_succesfully_UpdateTarea()
 {
 	swal({
@@ -156,7 +174,15 @@ function message_succesfully_Public_delete()
 
    	});
 }
+function message_succesfully_Foro_delete()
+{
+	swal({
+        title: "!Foro Eliminado!",
+        text: "Haz click para continuar",
+        icon: "success",
 
+   	});
+}
 function message_succesfully_Tarea_delete()
 {
 	swal({
