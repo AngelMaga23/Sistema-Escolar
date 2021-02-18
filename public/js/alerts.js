@@ -28,6 +28,16 @@ function message_succesfully_Tarea()
    	});
 }
 
+function message_succesfully_Eval()
+{
+	swal({
+        title: "!Evaluación creada!",
+        text: "Haz click para continuar",
+        icon: "success",
+
+   	});
+}
+
 function message_succesfully_Clase_edit()
 {
 	swal({
@@ -106,6 +116,17 @@ function message_succesfully_UpdateTarea()
    	});
 }
 
+function message_succesfully_UpdateEval()
+{
+	swal({
+        title: "!Evaluación Actualizada!",
+        text: "Haz click para continuar",
+        icon: "success",
+
+   	});
+}
+
+
 function message_succesfully_Asignatura()
 {
 	swal({
@@ -183,6 +204,17 @@ function message_succesfully_Foro_delete()
 
    	});
 }
+
+function message_succesfully_Eval_delete()
+{
+	swal({
+        title: "!Evaluación Eliminada!",
+        text: "Haz click para continuar",
+        icon: "success",
+
+   	});
+}
+
 function message_succesfully_Tarea_delete()
 {
 	swal({

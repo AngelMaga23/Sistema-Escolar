@@ -132,7 +132,7 @@
                                 <a class="collapse-item" href="{{ url('publicacion/'.$ca->id) }}">Publicaciones</a>
                                 <a class="collapse-item" href="{{ url('tarea/'.$ca->id) }}">Tareas</a>
                                 <a class="collapse-item" href="{{ url('foro/'.$ca->id) }}">Foros</a>
-                                <a class="collapse-item" href="cards.html">Evaluaciones</a>
+                                <a class="collapse-item" href="{{ url('evaluacion/'.$ca->id) }}">Evaluaciones</a>
                             </div>
                         </div>
                     </li>                                            

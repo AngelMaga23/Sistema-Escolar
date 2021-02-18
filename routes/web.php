@@ -10,6 +10,7 @@ use App\Http\Controllers\PerfilController;
 use App\Http\Controllers\AnuncioController;
 use App\Http\Controllers\TareaController;
 use App\Http\Controllers\ForoController;
+use App\Http\Controllers\EvaluacionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -118,3 +119,14 @@ Route::get('foro/{id}/edit',[ForoController::class, 'edit']);
 Route::post('guardar_foro',[ForoController::class, 'store']);
 Route::post('update_foro',[ForoController::class, 'update']);
 Route::post('foro_delete', [ForoController::class, 'destroy']);
+
+/** Evaluación */
+
+Route::get('evaluacion/{id}',[EvaluacionController::class, 'index']);
+Route::post('evaluacion_asig_index',[EvaluacionController::class, 'index_evaluacion']);
+Route::get('evaluacion/{id}/create',[EvaluacionController::class, 'create']);
+Route::get('evaluacion/{id}/edit',[EvaluacionController::class, 'edit']);
+
+Route::post('guardar_evaluacion',[EvaluacionController::class, 'store']);
+Route::post('update_evaluacion',[EvaluacionController::class, 'update']);
+Route::post('evaluacion_delete', [EvaluacionController::class, 'destroy']);
