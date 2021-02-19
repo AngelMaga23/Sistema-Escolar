@@ -167,4 +167,144 @@ class EvaluacionController extends Controller
             ],200);
         }
     }
+
+    public function Question($id)
+    {
+
+        $evaluacion = DB::table('examens')->where('id',$id)->get();
+
+        return view('Evaluacion.question',compact('evaluacion'));
+    }
+
+    public function index_questions(Request $request)
+    {
+        if($request->ajax())
+        {
+            $preguntas = DB::table('preguntas')->where('idexamen',$request->id)->get();
+
+            return datatables()->of($preguntas)
+                ->addColumn('action','Evaluacion.Preguntas.Options.options')
+                ->rawColumns(['action'])
+                ->addIndexColumn()
+                ->make(true); 
+        }
+
+    }
+
+    public function Add_Question(Request $request)
+    {
+        try {
+            DB::table('preguntas')->insert([
+                "pregunta" => $request->pregunta,
+                "valor" => $request->valor,
+                "idexamen" => $request->idexamen,
+            ]);
+
+            return response()->json([
+                "message" => "ok"
+            ]);
+
+        } catch (\Throwable $th) {
+            return response()->json([
+                "message" => $th
+            ]);
+        }
+    }
+
+    public function Del_Question(Request $request)
+    {   
+        try {
+            DB::table('preguntas')->where('id',$request->id)->delete();
+            return response()->json([
+                "message" => "ok"
+            ]);
+
+        } catch (\Throwable $th) {
+            return response()->json([
+                "message" => $th
+            ]);
+        }
+    }
+
+    public function Suma_valor(Request $request)
+    {
+        $preguntas = DB::table('preguntas')->where('idexamen',$request->id)->get();
+        $suma = 0;
+
+        if(!$preguntas->isEmpty())
+        {
+            foreach ($preguntas as $p) {
+                $suma += $p->valor;
+            }
+
+            return response()->json([
+                "total_valor" => $suma
+            ]);
+        }else{
+            return response()->json([
+                "total_valor" => $suma
+            ]);
+        }
+    }
+
+    public function Respuestas($id)
+    {
+        $pregunta = DB::table('preguntas')->where('id',$id)->get();
+        return view('Evaluacion.Preguntas.index',compact('pregunta'));
+    }
+
+    public function index_respuestas(Request $request)
+    {
+        if($request->ajax())
+        {
+            $respuestas = DB::table('respuestas')->where('idpregunta',$request->id)->get();
+
+            return datatables()->of($respuestas)
+                ->addColumn('action','Evaluacion.Preguntas.Respuestas.options')
+                ->addColumn('estatu','Evaluacion.Preguntas.Respuestas.estatu')
+                ->rawColumns(['action','estatu'])
+                ->addIndexColumn()
+                ->make(true); 
+        }
+
+    }
+
+    public function Add_Answers(Request $request)
+    {
+        try {
+            
+            DB::table('respuestas')->insert([
+                "respuesta" => $request->res,
+                "estatu" => $request->est,
+                "idpregunta" => $request->idp,
+            ]);
+
+            return response()->json([
+                "message" => "ok"
+            ]);
+
+
+
+        } catch (\Throwable $th) {
+            return response()->json([
+                "message" => $th
+            ]);
+        }
+    }
+
+    public function Del_Answers(Request $request)
+    {   
+        try {
+            DB::table('respuestas')->where('id',$request->id)->delete();
+            return response()->json([
+                "message" => "ok"
+            ]);
+
+        } catch (\Throwable $th) {
+            return response()->json([
+                "message" => $th
+            ]);
+        }
+    }
+
 }

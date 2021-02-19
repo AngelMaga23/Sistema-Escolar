@@ -130,3 +130,15 @@ Route::get('evaluacion/{id}/edit',[EvaluacionController::class, 'edit']);
 Route::post('guardar_evaluacion',[EvaluacionController::class, 'store']);
 Route::post('update_evaluacion',[EvaluacionController::class, 'update']);
 Route::post('evaluacion_delete', [EvaluacionController::class, 'destroy']);
+
+Route::get('evaluacion/{id}/questions',[EvaluacionController::class, 'Question']);
+Route::post('preguntas_index',[EvaluacionController::class, 'index_questions']);
+Route::post('add_question',[EvaluacionController::class, 'Add_Question']);
+Route::post('get_suma_valor',[EvaluacionController::class, 'Suma_valor']);
+Route::post('del_question',[EvaluacionController::class, 'Del_Question']);
+
+Route::get('pregunta/{id}',[EvaluacionController::class, 'Respuestas']);
+Route::post('respuestas_index',[EvaluacionController::class, 'index_respuestas']);
+
+Route::post('add_answers',[EvaluacionController::class, 'Add_Answers']);
+Route::post('del_answers',[EvaluacionController::class, 'Del_Answers']);
