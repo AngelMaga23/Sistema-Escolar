@@ -11,6 +11,7 @@ use App\Http\Controllers\AnuncioController;
 use App\Http\Controllers\TareaController;
 use App\Http\Controllers\ForoController;
 use App\Http\Controllers\EvaluacionController;
+use App\Http\Controllers\PublicacionAlumnoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -142,3 +143,12 @@ Route::post('respuestas_index',[EvaluacionController::class, 'index_respuestas']
 
 Route::post('add_answers',[EvaluacionController::class, 'Add_Answers']);
 Route::post('del_answers',[EvaluacionController::class, 'Del_Answers']);
+
+/** Estudiantes */
+
+Route::get('alumno-publicacion/{id}',[PublicacionAlumnoController::class, 'index']);
+Route::post('alumno_public_index',[PublicacionAlumnoController::class, 'index_public_clase']);
+Route::get('ver-publicacion/{id}',[PublicacionAlumnoController::class, 'verPublicacion']);
+Route::post('coments_publics',[PublicacionAlumnoController::class, 'Comentarios']);
+Route::post('add_coment',[PublicacionAlumnoController::class, 'Add_comentario']);
+Route::post('del_coment',[PublicacionAlumnoController::class, 'Del_comentario']);

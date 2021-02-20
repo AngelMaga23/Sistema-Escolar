@@ -148,7 +148,7 @@
                         $alumno_clase = DB::table('alumno_clase')->where('idalumno',$alumno[0]->id)->get();
 
                         $clase_asignaturas = DB::table('clase_asignatura as ca')
-                                        ->select(DB::raw('ca.id,a.nombre as asignatura'))
+                                        ->select(DB::raw('ca.id,a.nombre as asignatura, c.id as idclase'))
                                         ->join('asignaturas as a','ca.idasignatura','=','a.id')
                                         ->join('clases as c','ca.idclase','=','c.id')
                                         ->where('ca.idclase',$alumno_clase[0]->idclase)
@@ -165,7 +165,7 @@
                             <div id="{{ $ca->asignatura.$ca->id }}" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                                 <div class="bg-white py-2 collapse-inner rounded">
                                     <h6 class="collapse-header">Opciones:</h6>
-                                    <a class="collapse-item" href="cards.html">Publicaciones</a>
+                                    <a class="collapse-item" href="{{ url('alumno-publicacion/'.$ca->id) }}">Publicaciones</a>
                                     <a class="collapse-item" href="cards.html">Tareas</a>
                                     <a class="collapse-item" href="cards.html">Evaluaciones</a>
                                     <a class="collapse-item" href="cards.html">Profesor</a>
