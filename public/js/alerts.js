@@ -38,6 +38,17 @@ function message_succesfully_Eval()
    	});
 }
 
+function message_succesfully_SendTarea()
+{
+	swal({
+        title: "!Tarea Entregada!",
+        text: "Haz click para continuar",
+        icon: "success",
+
+   	});
+}
+
+
 function message_succesfully_Clase_edit()
 {
 	swal({

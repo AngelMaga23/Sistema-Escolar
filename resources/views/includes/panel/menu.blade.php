@@ -166,7 +166,7 @@
                                 <div class="bg-white py-2 collapse-inner rounded">
                                     <h6 class="collapse-header">Opciones:</h6>
                                     <a class="collapse-item" href="{{ url('alumno-publicacion/'.$ca->id) }}">Publicaciones</a>
-                                    <a class="collapse-item" href="cards.html">Tareas</a>
+                                    <a class="collapse-item" href="{{ url('alumno-tarea/'.$ca->id) }}">Tareas</a>
                                     <a class="collapse-item" href="cards.html">Evaluaciones</a>
                                     <a class="collapse-item" href="cards.html">Profesor</a>
           

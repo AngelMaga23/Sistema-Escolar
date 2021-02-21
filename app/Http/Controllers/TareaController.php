@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Tarea;
+use Illuminate\Support\Facades\Auth;
 
 class TareaController extends Controller
 {
@@ -186,4 +187,123 @@ class TareaController extends Controller
             ],200);
         }
     }
+
+    public function Entregas($id)
+    {
+        $tarea = DB::table('tareas')->where('id',$id)->get();
+        $idclase_a = $tarea[0]->idclase_asig;
+        return view('Tareas.entregas',compact('id','idclase_a'));
+    }
+
+    public function Entregas_index(Request $request)
+    {
+        if($request->ajax())
+        {
+            $entregas = DB::table('entregas as e')
+                ->select(DB::raw('e.id,e.nombre,e.archivo,e.descripcion,e.calificacion,e.estatu,e.created_at,a.primer_nom,a.segundo_nom,a.apellido_p,a.apellido_m'))
+                ->join('alumno_clase as ac','e.idalumno_clase','=','ac.id')
+                ->join('alumnos as a','ac.idalumno','=','a.id')
+                ->where('e.idtarea',$request->idtarea)
+                ->get();
+
+            return datatables()->of($entregas)
+                ->addColumn('alumno','Tareas.Options_entregas.alumno')
+                ->addColumn('action','Tareas.Options_entregas.options')
+                ->addColumn('estatu','Tareas.Options_entregas.estatu')
+                ->rawColumns(['action','estatu','alumno'])
+                ->addIndexColumn()
+                ->make(true); 
+            
+        }
+    }
+
+    public function Entrega($id)
+    {
+        $entrega = DB::table('entregas')->where('id',$id)->get();
+
+        $tarea = DB::table('tareas as t')
+            ->select(DB::raw('t.id,t.nombre,t.descripcion,t.archivo,t.estatu,t.fecha_ini,t.fecha_fin,t.idclase_asig,c.nombre as nom_clase,a.nombre as asignatura,m.primer_nom,m.segundo_nom,m.apellido_p,m.apellido_m'))
+            ->join('clase_asignatura as ca','t.idclase_asig','=','ca.id')
+            ->join('clases as c','ca.idclase','=','c.id')
+            ->join('maestros as m','ca.idmaestro','=','m.id')
+            ->join('asignaturas as a','ca.idasignatura','=','a.id')
+            ->where('t.id',$entrega[0]->idtarea)
+            ->get();
+
+        return view('Tareas.Options_entregas.Modal.index',compact('tarea','entrega'));
+    }
+
+    public function Add_Coment_Entrega(Request $request)
+    {
+        try {
+
+            $id = Auth::id();
+            $maestro = DB::table('maestros')->where('iduser',$id)->get();
+
+            DB::table('coment_entregas')->insert([
+
+                "mensaje" => $request->mensaje,
+                "identrega" => $request->identrega,
+                "idmaestro" => $maestro[0]->id,
+                "created_at" => date('Y-m-d H:i:s'),
+
+            ]);
+
+            return response()->json([
+                "message" => "ok"
+            ]);
+
+        } catch (\Throwable $th) {
+            return response()->json([
+                "message" => $th
+            ]);
+        }
+    }
+
+    public function Del_Coment_Entrega(Request $request)
+    {
+        try {
+
+            DB::table('coment_entregas')->where('id',$request->id)->delete();
+
+            return response()->json([
+                "message" => "ok"
+            ]);
+
+        } catch (\Throwable $th) {
+            return response()->json([
+                "message" => $th
+            ]);
+        }
+    }
+
+    public function Calificacion($id)
+    {
+        $entrega = DB::table('entregas')->where('id',$id)->get();
+
+        return view('Tareas.Options_entregas.Modal.calificacion',compact('entrega'));
+    }
+
+    public function Calificar(Request $request)
+    {
+        try {
+
+            DB::table('entregas')->where('id',$request->identrega)->update([
+
+                "calificacion" => $request->cal,
+                "estatu" => '0',
+
+            ]);
+
+            return response()->json([
+                "message" => "ok"
+            ]);
+
+        } catch (\Throwable $th) {
+            return response()->json([
+                "message" => $th
+            ]);
+        }
+    }
+
 }

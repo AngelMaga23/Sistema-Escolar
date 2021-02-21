@@ -12,6 +12,7 @@ use App\Http\Controllers\TareaController;
 use App\Http\Controllers\ForoController;
 use App\Http\Controllers\EvaluacionController;
 use App\Http\Controllers\PublicacionAlumnoController;
+use App\Http\Controllers\TareaAlumnoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -111,6 +112,15 @@ Route::post('guardar_tarea',[TareaController::class, 'store']);
 Route::post('update_tarea',[TareaController::class, 'update']);
 Route::post('tarea_delete', [TareaController::class, 'destroy']);
 
+Route::get('tarea/{id}/entregas',[TareaController::class, 'Entregas']);
+Route::post('entregas_index',[TareaController::class, 'Entregas_index']);
+Route::get('entrega/{id}',[TareaController::class, 'Entrega']);
+Route::post('add_comente_entrega',[TareaController::class, 'Add_Coment_Entrega']);
+Route::post('del_comente_entrega',[TareaController::class, 'Del_Coment_Entrega']);
+
+Route::get('calificacion/{id}',[TareaController::class, 'Calificacion']);
+Route::post('calificar',[TareaController::class, 'Calificar']);
+
 /** Foro */
 Route::get('foro/{id}',[ForoController::class, 'index']);
 Route::post('foro_asig_index',[ForoController::class, 'index_foros']);
@@ -146,9 +156,18 @@ Route::post('del_answers',[EvaluacionController::class, 'Del_Answers']);
 
 /** Estudiantes */
 
+/** Publicacion */
 Route::get('alumno-publicacion/{id}',[PublicacionAlumnoController::class, 'index']);
 Route::post('alumno_public_index',[PublicacionAlumnoController::class, 'index_public_clase']);
 Route::get('ver-publicacion/{id}',[PublicacionAlumnoController::class, 'verPublicacion']);
 Route::post('coments_publics',[PublicacionAlumnoController::class, 'Comentarios']);
 Route::post('add_coment',[PublicacionAlumnoController::class, 'Add_comentario']);
 Route::post('del_coment',[PublicacionAlumnoController::class, 'Del_comentario']);
+
+/** Alumno */
+Route::get('alumno-tarea/{id}',[TareaAlumnoController::class, 'index']);
+Route::post('alumno_tarea_index',[TareaAlumnoController::class, 'index_tarea_clase']);
+Route::get('ver-tarea/{id}',[TareaAlumnoController::class, 'verTarea']);
+Route::post('tarea_options',[TareaAlumnoController::class, 'Tarea_Options']);
+Route::post('send_tarea',[TareaAlumnoController::class, 'Send_Tarea']);
+Route::post('del_entrega',[TareaAlumnoController::class, 'Del_Entrega']);

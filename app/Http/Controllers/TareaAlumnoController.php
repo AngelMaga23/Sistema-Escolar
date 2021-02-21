@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
-class PublicacionAlumnoController extends Controller
+class TareaAlumnoController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,75 +16,86 @@ class PublicacionAlumnoController extends Controller
     public function index($id)
     {
         $idclase = $id;
-        return view('Estudiante.Publicacion.index',compact('idclase'));
+        return view('Estudiante.Tarea.index',compact('idclase'));
     }
 
-    public function index_public_clase(Request $request)
+    public function index_tarea_clase(Request $request)
     {
         if($request->ajax())
         {
-            $clase_asigna = DB::table('publicacions as p')
-                ->select(DB::raw('p.id,p.nombre,p.descripcion,tp.nombre as tipo'))
-                ->join('tipo_publicacions as tp','p.idtipo','=','tp.id')
-                ->join('clase_asignatura as ca','ca.id','=','p.idclase_asig')
+            $clase_asigna = DB::table('tareas as t')
+                ->select(DB::raw('t.id,t.nombre,t.estatu'))
+                ->join('clase_asignatura as ca','ca.id','=','t.idclase_asig')
                 ->where('ca.id',$request->idclase)
                 ->get();
 
             return datatables()->of($clase_asigna)
-                ->addColumn('action','Estudiante.Publicacion.Options.action')
-                // ->addColumn('descripcion','Anuncio.Options.descripcion')
-                ->rawColumns(['action'])
+                ->addColumn('action','Estudiante.Tarea.Options.options')
+                ->addColumn('estatu','Estudiante.Tarea.Options.estatu')
+                ->rawColumns(['action','estatu'])
                 ->addIndexColumn()
                 ->make(true); 
 
         }
     }
 
-    public function verPublicacion($id)
+    public function verTarea($id)
     {
-        $publicacion = DB::table('publicacions as p')
-                        ->select(DB::raw('p.id,p.nombre,p.descripcion,p.created_at,tp.nombre as tipo,c.nombre as nom_clase,a.nombre as asignatura,m.primer_nom,m.segundo_nom,m.apellido_p,m.apellido_m,p.idclase_asig'))
-                        ->join('tipo_publicacions as tp','p.idtipo','=','tp.id')
-                        ->join('clase_asignatura as ca','p.idclase_asig','=','ca.id')
+        $tarea = DB::table('tareas as t')
+                        ->select(DB::raw('t.id,t.nombre,t.descripcion,t.archivo,t.estatu,t.fecha_ini,t.fecha_fin,t.idclase_asig,c.nombre as nom_clase,a.nombre as asignatura,m.primer_nom,m.segundo_nom,m.apellido_p,m.apellido_m'))
+                        ->join('clase_asignatura as ca','t.idclase_asig','=','ca.id')
                         ->join('clases as c','ca.idclase','=','c.id')
                         ->join('maestros as m','ca.idmaestro','=','m.id')
                         ->join('asignaturas as a','ca.idasignatura','=','a.id')
-                        ->where('p.id',$id)
-                        ->get();
+                        ->where('t.id',$id)
+                        ->get();                
 
-        return view('Estudiante.Publicacion.ver_publicacion',compact('publicacion'));                       
+        return view('Estudiante.Tarea.verTarea',compact('tarea'));    
     }
 
-    public function Comentarios(Request $request)
+    public function Tarea_Options(Request $request)
     {
-        $comentarios = DB::table('coments_publics as cp')
-                        ->select(DB::raw('cp.id,a.primer_nom,a.segundo_nom,a.apellido_p,a.apellido_m,cp.comentario,cp.created_at,a.iduser,u.imagen'))
-                        ->join('alumno_clase as ac','cp.idalumno_clase','=','ac.id')
-                        ->join('alumnos as a','ac.idalumno','=','a.id')
-                        ->join('users as u','a.iduser','=','u.id')
-                        ->where('cp.idpublicacion',$request->id)
-                        ->get();
-
-        return view('Estudiante.Publicacion.Options.comentarios',compact('comentarios'));     
+        $entrega = DB::table('entregas')
+                    ->where('idtarea',$request->id)                
+                    ->get();
+        $idtarea = $request->id;
+        return view('Estudiante.Tarea.tarea_option',compact('entrega','idtarea'));    
     }
 
-    public function Add_comentario(Request $request)
+    public function Send_Tarea(Request $request)
     {
         try {
+            
             $id = Auth::id();
             $alumno = DB::table('alumnos')->where('iduser',$id)->get();
             $alumno_clase = DB::table('alumno_clase')->where('idalumno',$alumno[0]->id)->get();
 
-            DB::table('coments_publics')->insert([
-                "comentario" => $request->comentario,
+            if($request->hasFile('fileEntrega')){
+
+                $file = $request->file('fileEntrega');
+                $namefile = time().$file->getClientOriginalName();
+                $file->move('Archivos',$namefile);
+            }else{
+                $namefile = "";
+            }
+
+            DB::table('entregas')->insert([
+
+                "nombre" => $request->nom_entrega,
+                "descripcion" => $request->entrega_descripcion,
+                "archivo" => $namefile,
+                "calificacion" => 0,
+                "estatu" => 1,
                 "idalumno_clase" => $alumno_clase[0]->id,
-                "idpublicacion" => $request->idpublic,
-                "created_at" => date('Y-m-d H:i:s'),
+                "idtarea" => $request->idtarea,
+                "created_at" => date('Y-m-d H:i:s')
+
             ]);
 
             return response()->json([
                 "message" => "ok"
             ]);
+
         } catch (\Throwable $th) {
             return response()->json([
                 "message" => $th
@@ -92,15 +103,24 @@ class PublicacionAlumnoController extends Controller
         }
     }
 
-    public function Del_comentario(Request $request)
+    public function Del_Entrega(Request $request)
     {
         try {
 
-            DB::table('coments_publics')->where('id',$request->id)->update(['comentario' => 'Comentario eliminado']);
+            $entrega = DB::table('entregas')->where('id',$request->id)->get();
+
+            if($entrega[0]->archivo != null)
+            {
+                $file_path = 'Archivos/'.$entrega[0]->archivo;
+                unlink($file_path);
+            }
+
+            DB::table('entregas')->where('id',$request->id)->delete();
 
             return response()->json([
                 "message" => "ok"
             ]);
+
         } catch (\Throwable $th) {
             return response()->json([
                 "message" => $th
