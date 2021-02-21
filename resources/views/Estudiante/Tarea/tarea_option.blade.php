@@ -24,9 +24,42 @@
                 </div>
                 <div class="card-footer">
                     @php
-                        $coments = DB::table('')
+                        $coments = DB::table('coment_entregas as c')
+                                    ->select(DB::raw('c.id,c.mensaje,c.created_at,m.primer_nom,m.segundo_nom,m.apellido_p,m.apellido_m'))
+                                    ->join('maestros as m','c.idmaestro','=','m.id')
+                                    ->where('c.identrega',$entrega[0]->id)
+                                    ->get();
                     @endphp
                     Comentarios
+                    <div class="row">
+                        @if (!$coments->isEmpty())
+                            @foreach ($coments as $c)
+                                <div class="col-md-12">
+                                    <div class="container mt-5" style="margin-top: 0px !important;">
+                                        <div class="row d-flex justify-content-center">
+                                            <div class="col-md-12">
+                                                <div class="card p-3 mt-2">
+                                                    <div class="d-flex justify-content-between align-items-center">
+                                                        <div class="user d-flex flex-row align-items-center"> <span><small class="font-weight-bold text-primary">{{ " ".$c->primer_nom." ".$c->segundo_nom." ".$c->apellido_p." ".$c->apellido_m }}</small> <small class="font-weight-bold">{{ $c->mensaje }}</small></span> </div> <small>{{ $c->created_at }}</small>
+                                                    </div>
+                                                    <div class="action d-flex justify-content-between mt-2 align-items-center">
+                                                        <div class="reply px-4"> </div>
+                                                        <div class="icons align-items-center"> <i class="fa fa-check-circle-o check-icon text-primary"></i> </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>     
+                            @endforeach
+                        @else
+                            <div class="col-md-12">
+                                No hay comentarios
+                            </div>
+                        @endif
+
+
+                    </div>
                 </div>
             </div>
         </div>
