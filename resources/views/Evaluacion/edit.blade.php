@@ -32,10 +32,12 @@
                     <div class="form-row">
                         <input type="hidden" name="idclase" value="{{ $evaluacion[0]->idclase_asig }}">
                         <input type="hidden" name="ideval" value="{{ $evaluacion[0]->id }}">
-                        <div class="form-group col-md-6">
+                        <div class="form-group col-md-12">
                             <label for="nombre_eval">Nombre</label>
                             <input type="text" name="nombre_eval" id="nombre_eval" class="form-control" value="{{ $evaluacion[0]->nombre }}" required>
                         </div>
+                    </div>
+                    <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="estatu_eval">Estatu</label>
                             <select name="estatu_eval" id="estatu_eval" class="form-control">
@@ -44,6 +46,10 @@
                                 <option value="1" @if($evaluacion[0]->estatu == "1") {{ "selected" }} @endif>Activo</option>
                             </select>
                         </div>   
+                        <div class="form-group col-md-6">
+                            <label for="duracion">Duración <small>(Minutos)</small></label>
+                            <input type="number" name="duracion" id="duracion" class="form-control" min="1" value="{{ $evaluacion[0]->duracion }}">
+                        </div>      
                     </div>
                     <div class="row">
                         <div class="col-md-12">

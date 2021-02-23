@@ -13,6 +13,7 @@ use App\Http\Controllers\ForoController;
 use App\Http\Controllers\EvaluacionController;
 use App\Http\Controllers\PublicacionAlumnoController;
 use App\Http\Controllers\TareaAlumnoController;
+use App\Http\Controllers\EvaluacionAlumnoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -171,3 +172,16 @@ Route::get('ver-tarea/{id}',[TareaAlumnoController::class, 'verTarea']);
 Route::post('tarea_options',[TareaAlumnoController::class, 'Tarea_Options']);
 Route::post('send_tarea',[TareaAlumnoController::class, 'Send_Tarea']);
 Route::post('del_entrega',[TareaAlumnoController::class, 'Del_Entrega']);
+
+/** Evaluacion */
+Route::get('alumno-evaluacion/{id}',[EvaluacionAlumnoController::class, 'index']);
+Route::post('alumno_evaluacion_index',[EvaluacionAlumnoController::class, 'index_evaluacion_clase']);
+Route::get('ver-evaluacion/{id}',[EvaluacionAlumnoController::class, 'verEvaluacion']);
+Route::get('ver-resultado/{id}',[EvaluacionAlumnoController::class, 'Resultado']);
+
+Route::post('description_test',[EvaluacionAlumnoController::class, 'Description_Test']);
+Route::post('start_test',[EvaluacionAlumnoController::class, 'Start_Test']);
+
+Route::post('end_test',[EvaluacionAlumnoController::class, 'End_Test']);
+Route::post('update_time_test',[EvaluacionAlumnoController::class, 'Update_Time_Test']);
+Route::post('select_answer',[EvaluacionAlumnoController::class, 'Select_Answer']);

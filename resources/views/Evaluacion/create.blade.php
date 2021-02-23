@@ -31,10 +31,12 @@
                 <div class="col-md-12">
                     <div class="form-row">
                         <input type="hidden" name="idclase" value="{{ $idclase_a }}">
-                        <div class="form-group col-md-6">
+                        <div class="form-group col-md-12">
                             <label for="nombre_eval">Nombre</label>
                             <input type="text" name="nombre_eval" id="nombre_eval" class="form-control" required>
                         </div>
+                    </div>
+                    <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="estatu_eval">Estatu</label>
                             <select name="estatu_eval" id="estatu_eval" class="form-control">
@@ -42,7 +44,11 @@
                                 <option value="0">Inactivo</option>
                                 <option value="1">Activo</option>
                             </select>
-                        </div>   
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="duracion">Duración <small>(Minutos)</small></label>
+                            <input type="number" name="duracion" id="duracion" class="form-control" min="1">
+                        </div>      
                     </div>
                     <div class="row">
                         <div class="col-md-12">

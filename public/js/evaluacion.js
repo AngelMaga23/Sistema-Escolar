@@ -83,6 +83,10 @@ function TableEvaluacion() {
                 name: 'fecha_fin'
             },
             {
+                data: 'duracion',
+                name: 'duracion'
+            },
+            {
                 data: 'estatu',
                 name: 'estatu'
             },

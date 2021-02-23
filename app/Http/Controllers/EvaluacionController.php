@@ -24,7 +24,7 @@ class EvaluacionController extends Controller
         if($request->ajax())
         {
             $eval_asign = DB::table('examens as e')
-                            ->select(DB::raw('e.id,e.nombre,e.descripcion,e.fecha_ini,e.fecha_fin,e.estatu,e.idclase_asig'))
+                            ->select(DB::raw('e.id,e.nombre,e.descripcion,e.fecha_ini,e.fecha_fin,e.estatu,e.idclase_asig,e.duracion'))
                             ->where('e.idclase_asig',$request->idclase)
                             ->get();
 
@@ -68,6 +68,7 @@ class EvaluacionController extends Controller
                 "estatu"  => $request->estatu_eval,
                 "fecha_ini" => $request->fecha_ini,
                 "fecha_fin" => $request->fecha_fin,
+                "duracion"  => $request->duracion,
                 "idclase_asig" => $request->idclase,
                 "created_at" => date('Y-m-d H:i:s')
 
@@ -128,6 +129,7 @@ class EvaluacionController extends Controller
                 "estatu"  => $request->estatu_eval,
                 "fecha_ini" => $request->fecha_ini,
                 "fecha_fin" => $request->fecha_fin,
+                "duracion"  => $request->duracion,
                 "idclase_asig" => $request->idclase,
 
             ]);
