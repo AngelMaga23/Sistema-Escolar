@@ -7,12 +7,13 @@ use App\Models\Alumno;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
+use Spatie\Permission\Models\Role;
 
 class AlumnoController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware(['auth','role:Administrador']);
     }
     public function index(Request $request)
     {

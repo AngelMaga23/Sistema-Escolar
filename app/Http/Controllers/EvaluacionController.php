@@ -8,11 +8,10 @@ use App\Models\Examen;
 
 class EvaluacionController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    public function __construct()
+    {
+        $this->middleware(['auth','role:Profesor']);
+    }
     public function index($id)
     {
         $idclase_a = $id;

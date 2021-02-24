@@ -10,7 +10,7 @@ class AsignaturaController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware(['auth','role:Administrador']);
     }
     public function index(Request $request)
     {
