@@ -171,7 +171,7 @@ function Del_coment_Tarea(id)
     });
 }
 
-function Entrega(dato) {
+function EntregaCal(dato) {
     var options = {
         modal: true,
         height: 300,

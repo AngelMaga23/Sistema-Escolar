@@ -18,7 +18,7 @@
     data-target="#mdCalificacion" 
     data-backdrop="static" 
     data-keyboard="false"
-    onclick="Entrega({{ $id }})"
+    onclick="EntregaCal({{ $id }})"
     >
         <i class="fas fa-sort-numeric-up-alt"></i>
     </button>
