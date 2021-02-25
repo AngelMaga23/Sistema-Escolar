@@ -14,7 +14,7 @@
         
     @else
     {{-- chat.php?user_id='. $row['unique_id'] .' --}}
-        <a href="#">
+        <a onclick="Chat()" style="cursor: pointer;">
             <div class="content">
             <img src="{{ asset('images/'.$profesores_clase[0]->imagen) }}" alt="">
             <div class="details">

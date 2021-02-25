@@ -191,3 +191,6 @@ Route::post('select_answer',[EvaluacionAlumnoController::class, 'Select_Answer']
 /** Chat - Alumno */
 Route::get('alumno-chat/{id}',[ChatAlumnoController::class, 'index']);
 Route::get('data-profesores',[ChatAlumnoController::class, 'Dataprofesores']);
+Route::post('content_chats',[ChatAlumnoController::class, 'Content_Chat']);
+
+Route::post('student_information',[ChatAlumnoController::class, 'Student_Information']);

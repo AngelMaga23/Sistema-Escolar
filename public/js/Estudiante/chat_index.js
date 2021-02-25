@@ -1,16 +1,44 @@
-const usersList = document.querySelector(".users-list");
-setInterval(() =>{
-    var id = document.getElementById('idclase').value;
-    var token = $("#token").val();
-    let xhr = new XMLHttpRequest();
-    xhr.open("GET", "../data-profesores?_token="+token+"&id="+id, true);
-    xhr.onload = ()=>{
-      if(xhr.readyState === XMLHttpRequest.DONE){
-          if(xhr.status === 200){
-            let data = xhr.response;
-            usersList.innerHTML = data;
-          }
-      }
-    }
-    xhr.send();
-  }, 500);
+function Content_Chats()
+{
+  var token = $("#token").val();
+  $.ajax({
+    url: '../content_chats',
+    type: 'post',
+    headers: {
+        'X-CSRF-TOKEN': token
+    },
+    // data: {
+    //     "id":id
+    // },
+    success:function(response)
+    {
+        $('#content_chat').html(response);
+    },
+});
+}
+
+function Chat()
+{
+  var token = $("#token").val();
+  $.ajax({
+    url: '../student_information',
+    type: 'post',
+    headers: {
+        'X-CSRF-TOKEN': token
+    },
+    // data: {
+    //     "id":id
+    // },
+    success:function(response)
+    {
+        $('#content_chat').html(response);
+    },
+  });
+}
+
+$(document).ready(function () {
+    Content_Chats();
+
+
+
+});

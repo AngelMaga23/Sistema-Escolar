@@ -16,20 +16,21 @@ class ChatAlumnoController extends Controller
     public function index($id)
     {
         $idclase = $id;
+
+
+        return view('Estudiante.Chat.index', compact('idclase'));
+    }
+
+    public function Content_Chat(Request $request)
+    {
+        $id = Auth::id();
         $alumno = DB::table('alumnos as a')
                     ->select(DB::raw('a.id,a.primer_nom,a.segundo_nom,a.apellido_p,a.apellido_m,u.imagen'))
                     ->join('users as u','a.iduser','=','u.id')
+                    ->where('u.id',$id)
                     ->get();
-        // $profesores_clase = DB::table('maestros as m')
-        //     ->select(DB::raw('m.id,m.primer_nom,m.segundo_nom,m.apellido_p,m.apellido_m,a.nombre,u.imagen'))
-        //     ->join('clase_asignatura as ca', 'ca.idmaestro', '=', 'm.id')
-        //     ->join('asignaturas as a', 'ca.idasignatura', '=', 'a.id')
-        //     ->join('users as u','m.iduser','=','u.id')
-        //     ->where('ca.id',$idclase)
-        //     ->get();
 
-        // return view('Estudiante.Chat.index',compact('profesores_clase'));
-        return view('Estudiante.Chat.index', compact('idclase','alumno'));
+        return view('Estudiante.Chat.content_chats', compact('alumno'));
     }
 
     public function ChatProfesorIndex(Request $request)
@@ -65,6 +66,18 @@ class ChatAlumnoController extends Controller
             ->get();
 
         return view('Estudiante.Chat.profesores', compact('profesores_clase'));
+    }
+
+    public function Student_Information(Request $request)
+    {
+        $id = Auth::id();
+        $alumno = DB::table('alumnos as a')
+                    ->select(DB::raw('a.id,a.primer_nom,a.segundo_nom,a.apellido_p,a.apellido_m,u.imagen'))
+                    ->join('users as u','a.iduser','=','u.id')
+                    ->where('u.id',$id)
+                    ->get();
+
+        return view('Estudiante.Chat.chat', compact('alumno'));
     }
 
     /**
