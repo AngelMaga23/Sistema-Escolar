@@ -14,6 +14,8 @@ use App\Http\Controllers\EvaluacionController;
 use App\Http\Controllers\PublicacionAlumnoController;
 use App\Http\Controllers\TareaAlumnoController;
 use App\Http\Controllers\EvaluacionAlumnoController;
+use App\Http\Controllers\ChatAlumnoController;
+use App\Http\Controllers\ChatProfesorController;
 
 /*
 |--------------------------------------------------------------------------
@@ -185,3 +187,7 @@ Route::post('start_test',[EvaluacionAlumnoController::class, 'Start_Test']);
 Route::post('end_test',[EvaluacionAlumnoController::class, 'End_Test']);
 Route::post('update_time_test',[EvaluacionAlumnoController::class, 'Update_Time_Test']);
 Route::post('select_answer',[EvaluacionAlumnoController::class, 'Select_Answer']);
+
+/** Chat - Alumno */
+Route::get('alumno-chat/{id}',[ChatAlumnoController::class, 'index']);
+Route::get('data-profesores',[ChatAlumnoController::class, 'Dataprofesores']);
