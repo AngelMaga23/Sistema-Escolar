@@ -1,9 +1,9 @@
-@if (!$profesores_clase->isEmpty())
-    @foreach ($profesores_clase as $p)
+@if (!$alumnos_clase->isEmpty())
+
+    @foreach ($alumnos_clase as $p)
         @php
             $id =Auth::user()->id;
             $idout = $p->iduser;
-
             $chat = DB::table('chat as c')
                         ->where(function ($query) use ($idout,$id){
                             return $query->where('c.outgoing_user_id','=',$id)->where('c.incoming_user_id','=',$idout);
@@ -36,10 +36,10 @@
                 </div>
                 {{-- <div class="status-dot '. $offline .'"><i class="fas fa-circle"></i></div> --}}
             </a>
+
         @endif
+
     @endforeach
-
-
 
 
 

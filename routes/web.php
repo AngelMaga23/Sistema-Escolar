@@ -188,9 +188,22 @@ Route::post('end_test',[EvaluacionAlumnoController::class, 'End_Test']);
 Route::post('update_time_test',[EvaluacionAlumnoController::class, 'Update_Time_Test']);
 Route::post('select_answer',[EvaluacionAlumnoController::class, 'Select_Answer']);
 
+/** Chat - Profesor */
+
+Route::get('profesor-chat/{id}',[ChatProfesorController::class, 'index']);
+Route::get('data-alumnos',[ChatProfesorController::class, 'DataAlumnos']);
+Route::post('content_chats_profesor',[ChatProfesorController::class, 'Content_Chat']);
+
+Route::post('student_information_profesor',[ChatProfesorController::class, 'Student_Information']);
+Route::get('get-chat_profesor',[ChatProfesorController::class, 'GetChat']);
+Route::post('insert_chat_profesor',[ChatProfesorController::class, 'Insert_Chat']);
+
+
 /** Chat - Alumno */
 Route::get('alumno-chat/{id}',[ChatAlumnoController::class, 'index']);
 Route::get('data-profesores',[ChatAlumnoController::class, 'Dataprofesores']);
 Route::post('content_chats',[ChatAlumnoController::class, 'Content_Chat']);
 
 Route::post('student_information',[ChatAlumnoController::class, 'Student_Information']);
+Route::get('get-chat',[ChatAlumnoController::class, 'GetChat']);
+Route::post('insert_chat',[ChatAlumnoController::class, 'Insert_Chat']);

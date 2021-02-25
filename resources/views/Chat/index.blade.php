@@ -274,7 +274,7 @@
 
 
 @section('custom_script')
-    <script src="{{ asset('js/Estudiante/chat_index.js') }}"></script>
+    <script src="{{ asset('js/chat_index.js') }}"></script>
 
 @endsection
 

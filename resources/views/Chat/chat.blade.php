@@ -2,9 +2,9 @@
     <header>
 
       <a onclick="Content_Chats()" class="back-icon" style="cursor: pointer;"><i class="fas fa-arrow-left"></i></a>
-      <img src="{{ asset('images/'.$profesor[0]->imagen) }}" alt="">
+      <img src="{{ asset('images/'.$alumno[0]->imagen) }}" alt="">
       <div class="details">
-        <span>{{  $profesor[0]->primer_nom." ".$profesor[0]->segundo_nom." ".$profesor[0]->apellido_p." ".$profesor[0]->apellido_m  }}</span>
+        <span>{{  $alumno[0]->primer_nom." ".$alumno[0]->segundo_nom." ".$alumno[0]->apellido_p." ".$alumno[0]->apellido_m  }}</span>
         {{-- <p><?php echo $row['status']; ?></p> --}}
       </div>
     </header>
@@ -14,7 +14,7 @@
     <form action="#" class="typing-area">
       @csrf
       <input type="text" class="incoming_id" name="incoming_id" value="{{ Auth::user()->id }}" hidden>
-      <input type="hidden" id="outcoming" name="outcoming" value="{{ $idprofesor }}">
+      <input type="hidden" id="outcoming" name="outcoming" value="{{ $idalumno }}">
       <input type="text" name="message" class="input-field" placeholder="Type a message here..." autocomplete="off">
       <button><i class="fab fa-telegram-plane"></i></button>
     </div>
@@ -27,7 +27,7 @@
   var inputField = form.querySelector(".input-field");
   var inputField = form.querySelector(".input-field");
   var token = $("#token").val();
-  var idprofesor = $("#outcoming").val();
+  var idalumno = $("#outcoming").val();
 
   form.onsubmit = (e)=>{
     e.preventDefault();
@@ -43,7 +43,7 @@
   }
   sendBtn.onclick = ()=>{
     let xhr = new XMLHttpRequest();
-    xhr.open("POST", "../insert_chat", true);
+    xhr.open("POST", "../insert_chat_profesor", true);
     xhr.onload = ()=>{
       if(xhr.readyState === XMLHttpRequest.DONE){
           if(xhr.status === 200){
@@ -65,7 +65,7 @@
 
   setInterval(() =>{
       let xhr = new XMLHttpRequest();
-      xhr.open("GET", "../get-chat?_token="+token+"&id="+idprofesor, true);
+      xhr.open("GET", "../get-chat_profesor?_token="+token+"&id="+idalumno, true);
       xhr.onload = ()=>{
         if(xhr.readyState === XMLHttpRequest.DONE){
             if(xhr.status === 200){
@@ -80,7 +80,7 @@
       xhr.send();
       // xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
       // xhr.send("incoming_id="+incoming_id);
-  }, 1000);
+  }, 3000);
 
   function scrollToBottom(){
     chatBox.scrollTop = chatBox.scrollHeight;

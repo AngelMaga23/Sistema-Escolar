@@ -45,12 +45,7 @@ class ChatAlumnoController extends Controller
                 ->get();
 
             return view('Estudiante.Chat.index',compact('profesores_clase'));
-            // return datatables()->of($profesores_clase)
-            //     ->addColumn('action', 'Estudiante.Chat.Options.options')
-            //     ->addColumn('maestro', 'Estudiante.Chat.Options.maestro')
-            //     ->rawColumns(['action', 'maestro'])
-            //     ->addIndexColumn()
-            //     ->make(true);
+
         }
     }
 
@@ -70,14 +65,41 @@ class ChatAlumnoController extends Controller
 
     public function Student_Information(Request $request)
     {
-        $id = Auth::id();
-        $alumno = DB::table('alumnos as a')
-                    ->select(DB::raw('a.id,a.primer_nom,a.segundo_nom,a.apellido_p,a.apellido_m,u.imagen'))
-                    ->join('users as u','a.iduser','=','u.id')
-                    ->where('u.id',$id)
+        $idprofesor = $request->idprofesor;
+        $profesor = DB::table('maestros as m')
+                    ->select(DB::raw('m.id,m.primer_nom,m.segundo_nom,m.apellido_p,m.apellido_m,u.imagen'))
+                    ->join('users as u','m.iduser','=','u.id')
+                    ->where('m.iduser',$idprofesor)
                     ->get();
+      
+        return view('Estudiante.Chat.chat', compact('profesor','idprofesor'));
+    }
 
-        return view('Estudiante.Chat.chat', compact('alumno'));
+    public function GetChat(Request $request)
+    {
+        $id = Auth::id();
+        $alumno = DB::table('alumnos')->where('iduser',$id)->get();
+        $idout = $request->get('id');
+        $mensajes = DB::table('chat as c')
+                        ->select(DB::raw('c.id,c.incoming_user_id,c.outgoing_user_id,c.mensaje,u.imagen'))
+                        ->leftJoin('users as u','u.id','=','c.outgoing_user_id')
+                        ->where(function ($query) use ($idout,$id){
+                            return $query->where('c.outgoing_user_id','=',$id)->where('c.incoming_user_id','=',$idout);
+                        })->orWhere(function ($query) use ($idout,$id){
+                            return $query->where('c.outgoing_user_id',$idout)->where('c.incoming_user_id',$id);
+                        })->orderBy('c.id')->get();
+   
+
+        return view('Estudiante.Chat.get-chat',compact('mensajes'));
+    }
+
+    public function Insert_Chat(Request $request)
+    {
+        DB::table('chat')->insert([
+            "incoming_user_id" => $request->outcoming,
+            "outgoing_user_id" => $request->incoming_id,
+            "mensaje" => $request->message,
+        ]);
     }
 
     /**

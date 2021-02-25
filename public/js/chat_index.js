@@ -2,7 +2,7 @@ function Content_Chats()
 {
   var token = $("#token").val();
   $.ajax({
-    url: '../content_chats',
+    url: '../content_chats_profesor',
     type: 'post',
     headers: {
         'X-CSRF-TOKEN': token
@@ -17,17 +17,17 @@ function Content_Chats()
 });
 }
 
-function Chat(idprofesor)
+function Chat(idalumno)
 {
   var token = $("#token").val();
   $.ajax({
-    url: '../student_information',
+    url: '../student_information_profesor',
     type: 'post',
     headers: {
         'X-CSRF-TOKEN': token
     },
     data: {
-        "idprofesor":idprofesor
+        "idalumno":idalumno
     },
     success:function(response)
     {

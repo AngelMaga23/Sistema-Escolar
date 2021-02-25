@@ -112,10 +112,11 @@
                 @php
                     $maestro = DB::table('maestros')->where('iduser',Auth::user()->id)->get();
                     $clase_asignaturas = DB::table('clase_asignatura as ca')
-                                        ->select(DB::raw('ca.id,a.nombre as asignatura'))
+                                        ->select(DB::raw('ca.id,a.nombre as asignatura,ca.idclase'))
                                         ->join('asignaturas as a','ca.idasignatura','=','a.id')
                                         ->join('clases as c','ca.idclase','=','c.id')
                                         ->join('maestros as m','ca.idmaestro','=','m.id')
+                                        ->where('m.id',$maestro[0]->id)
                                         ->get();
                 @endphp
 
@@ -137,7 +138,11 @@
                         </div>
                     </li>                                            
                 @endforeach
-              
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url('profesor-chat/'.$clase_asignaturas[0]->idclase) }}">
+                        <i class="far fa-comments"></i>
+                        <span>Chat</span></a>
+                </li>     
             @endif
 
             @if (Auth::user()->hasRole('Alumno'))
@@ -176,7 +181,7 @@
                     @endforeach
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url('alumno-chat/'.$alumno_clase[0]->idclase) }}">
-                            <i class="fas fa-chalkboard-teacher text-red"></i>
+                            <i class="far fa-comments"></i>
                             <span>Chat</span></a>
                     </li>       
             @endif
