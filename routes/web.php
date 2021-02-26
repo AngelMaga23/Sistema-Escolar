@@ -16,6 +16,7 @@ use App\Http\Controllers\TareaAlumnoController;
 use App\Http\Controllers\EvaluacionAlumnoController;
 use App\Http\Controllers\ChatAlumnoController;
 use App\Http\Controllers\ChatProfesorController;
+use App\Http\Controllers\AlumnoClasesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -89,6 +90,9 @@ Route::post('del_alumno', [ClaseController::class, 'Del_alumnos']);
 Route::get('perfil/{id}',[PerfilController::class, 'index']);
 Route::post('perfil_update', [PerfilController::class, 'update']);
 
+/** Alumnos Clase */
+Route::get('Alumnos-clase/{id}',[AlumnoClasesController::class, 'index']);
+Route::post('alumnos_clase',[AlumnoClasesController::class, 'index_alumnos_clase']);
 /** Anuncios / Material */
 
 Route::get('publicacion/{id}',[AnuncioController::class, 'index']);

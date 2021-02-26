@@ -106,7 +106,7 @@ function Entrega(dato) {
         width: 600
     };
 
-    $('#content_modal').html('<div class="preloader"><img src="images/91.gif" alt="loading" width="50" height="50" /><br/></div>');
+    $('#content_modal').html('<div class="preloader"><img src="../../img/91.gif" alt="loading" width="50" height="50" /><br/></div>');
     $('#content_modal').load('../../entrega/' + dato, function () {
         $('#exampleModal').modal({ show: true });
         // Table_Archivos();
@@ -178,7 +178,7 @@ function EntregaCal(dato) {
         width: 600
     };
 
-    $('#content_modal_calificacion').html('<div class="preloader"><img src="images/91.gif" alt="loading" width="50" height="50" /><br/></div>');
+    $('#content_modal_calificacion').html('<div class="preloader"><img src="../../img/91.gif" alt="loading" width="50" height="50" /><br/></div>');
     $('#content_modal_calificacion').load('../../calificacion/' + dato, function () {
         $('#mdCalificacion').modal({ show: true });
         // Table_Archivos();

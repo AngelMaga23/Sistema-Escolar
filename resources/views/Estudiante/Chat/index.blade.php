@@ -256,7 +256,7 @@
       <div class="col-md-12">
         <div class="row">
           <div class="col-md-2"></div>
-          <div class="col-md-8">
+          <div class="col-md-8 d-flex justify-content-center">
             <div class="wrapper">
               <div id="content_chat">
               </div>

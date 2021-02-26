@@ -1,5 +1,5 @@
         <!-- Sidebar -->
-        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion toggled" id="accordionSidebar" style="background: slategrey;">
 
           <!-- Sidebar - Brand -->
           <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ url('/') }}">
@@ -104,11 +104,6 @@
             @endif
             
             @if (Auth::user()->hasRole('Profesor'))
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url('alumno') }}">
-                        <i class="fas fa-user-graduate text-blue"></i>
-                        <span>Alumnos</span></a>
-                </li> 
                 @php
                     $maestro = DB::table('maestros')->where('iduser',Auth::user()->id)->get();
                     $clase_asignaturas = DB::table('clase_asignatura as ca')
@@ -119,7 +114,11 @@
                                         ->where('m.id',$maestro[0]->id)
                                         ->get();
                 @endphp
-
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url('Alumnos-clase/'.$clase_asignaturas[0]->idclase)}}">
+                        <i class="fas fa-user-graduate text-blue"></i>
+                        <span>Alumnos</span></a>
+                </li> 
                 @foreach ($clase_asignaturas as $ca)
                     <li class="nav-item">
                         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="{{ "#".$ca->asignatura.$ca->id }}"

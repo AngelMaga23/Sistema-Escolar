@@ -149,7 +149,7 @@ function Asignaturas(dato)
     width:600
   };
 
-    $('#content_asignaturas').html('<div class="preloader"><img src="images/91.gif" alt="loading" width="50" height="50" /><br/></div>');
+    $('#content_asignaturas').html('<div class="preloader"><img src="img/91.gif" alt="loading" width="50" height="50" /><br/></div>');
     $('#content_asignaturas').load('maestro_asignaturas/'+dato, function() {
         $('#maestro_asignatura').modal({show:true});
         Table_Asignaturas();

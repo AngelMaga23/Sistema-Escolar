@@ -213,7 +213,7 @@ function Archivos(dato) {
         width: 600
     };
 
-    $('#content_modal').html('<div class="preloader"><img src="images/91.gif" alt="loading" width="50" height="50" /><br/></div>');
+    $('#content_modal').html('<div class="preloader"><img src="../../img/91.gif" alt="loading" width="50" height="50" /><br/></div>');
     $('#content_modal').load('../../archivo-publics/' + dato, function () {
         $('#exampleModal').modal({ show: true });
         Table_Archivos();
