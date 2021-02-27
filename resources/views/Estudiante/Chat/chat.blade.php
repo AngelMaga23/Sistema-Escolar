@@ -15,7 +15,7 @@
       @csrf
       <input type="text" class="incoming_id" name="incoming_id" value="{{ Auth::user()->id }}" hidden>
       <input type="hidden" id="outcoming" name="outcoming" value="{{ $idprofesor }}">
-      <input type="text" name="message" class="input-field" placeholder="Type a message here..." autocomplete="off">
+      <input type="text" name="message" class="input-field" placeholder="Escriba un mensaje aquí..." autocomplete="off">
       <button><i class="fab fa-telegram-plane"></i></button>
     </div>
 </section>

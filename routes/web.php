@@ -129,21 +129,29 @@ Route::get('calificacion/{id}',[TareaController::class, 'Calificacion']);
 Route::post('calificar',[TareaController::class, 'Calificar']);
 
 /** Foro */
-Route::get('foro/{id}',[ForoController::class, 'index']);
-Route::post('foro_asig_index',[ForoController::class, 'index_foros']);
-Route::get('foro/{id}/create',[ForoController::class, 'create']);
-Route::get('foro/{id}/edit',[ForoController::class, 'edit']);
 
+Route::prefix('foro')->group(function () {
+    Route::get('/{id}',[ForoController::class, 'index']);
+    Route::get('/{id}/create',[ForoController::class, 'create']);
+    Route::get('/{id}/edit',[ForoController::class, 'edit']);
+});
+
+Route::post('foro_asig_index',[ForoController::class, 'index_foros']);
 Route::post('guardar_foro',[ForoController::class, 'store']);
 Route::post('update_foro',[ForoController::class, 'update']);
 Route::post('foro_delete', [ForoController::class, 'destroy']);
 
 /** Evaluación */
 
-Route::get('evaluacion/{id}',[EvaluacionController::class, 'index']);
+Route::prefix('evaluacion')->group(function () {
+    Route::get('/{id}',[EvaluacionController::class, 'index']);
+    Route::get('/{id}/create',[EvaluacionController::class, 'create']);
+    Route::get('/{id}/edit',[EvaluacionController::class, 'edit']);
+    Route::get('/{id}/alumnos',[EvaluacionController::class, 'Alumno_Evalucion']);
+    Route::post('/alumno_eval_index',[EvaluacionController::class, 'Alumno_Evalucion_Index']);
+});
+
 Route::post('evaluacion_asig_index',[EvaluacionController::class, 'index_evaluacion']);
-Route::get('evaluacion/{id}/create',[EvaluacionController::class, 'create']);
-Route::get('evaluacion/{id}/edit',[EvaluacionController::class, 'edit']);
 
 Route::post('guardar_evaluacion',[EvaluacionController::class, 'store']);
 Route::post('update_evaluacion',[EvaluacionController::class, 'update']);

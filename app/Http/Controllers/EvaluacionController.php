@@ -308,4 +308,48 @@ class EvaluacionController extends Controller
         }
     }
 
+    public function Alumno_Evalucion($id)
+    {
+        $idclase_a = $id;
+        $evaluacion = DB::table('examens')
+            ->select(DB::raw('id,nombre,descripcion,duracion,idclase_asig'))
+            ->where('id',$id)
+            ->get();
+
+        $preguntas = DB::table('preguntas')
+                        ->select(DB::raw('valor'))
+                        ->where('idexamen',$idclase_a)
+                        ->get();
+        $suma = 0;
+    
+        if(!$preguntas->isEmpty())
+        {
+            foreach ($preguntas as $p) {
+                $suma += $p->valor;
+            }
+    
+        }        
+
+        return view('Evaluacion.Alumnos.index',compact('idclase_a','suma','evaluacion'));
+    }
+
+    public function Alumno_Evalucion_Index(Request $request)
+    {
+        if($request->ajax())
+        {
+            $eval_alumno = DB::table('examen_alumno as e')
+                ->select(DB::raw('a.primer_nom,a.segundo_nom,a.apellido_p,a.apellido_m,e.puntos,e.restante'))
+                ->join('alumno_clase as ac','e.idalumnoclase','=','ac.id')
+                ->join('alumnos as a','ac.idalumno','=','a.id')
+                ->where('e.idexamen',$request->idclase)
+                ->get();
+
+            return datatables()->of($eval_alumno)
+                ->addColumn('nombre','Evaluacion.Alumnos.Options.nombre')
+                ->rawColumns(['nombre'])
+                ->addIndexColumn()
+                ->make(true); 
+        }
+    }
+
 }

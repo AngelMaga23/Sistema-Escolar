@@ -71,12 +71,12 @@
             @if (Auth::user()->hasRole('Administrador'))
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url('alumno') }}">
-                        <i class="fas fa-user-graduate text-blue"></i>
+                        <i class="fas fa-user-graduate text-success"></i>
                         <span>Alumnos</span></a>
                 </li> 
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url('maestro') }}">
-                        <i class="fas fa-chalkboard-teacher text-red"></i>
+                        <i class="fas fa-chalkboard-teacher text-danger"></i>
                         <span>Maestros</span></a>
                 </li>    
     
@@ -98,7 +98,7 @@
 
                 <li class="nav-item">
                     <a class="nav-link" href="{{ asset('clase') }}">
-                        <i class="fas fa-chalkboard text-orange"></i>
+                        <i class="fas fa-chalkboard text-warning"></i>
                         <span>Clases</span></a>
                 </li>             
             @endif
@@ -116,14 +116,14 @@
                 @endphp
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url('Alumnos-clase/'.$clase_asignaturas[0]->idclase)}}">
-                        <i class="fas fa-user-graduate text-blue"></i>
+                        <i class="fas fa-user-graduate text-success"></i>
                         <span>Alumnos</span></a>
                 </li> 
                 @foreach ($clase_asignaturas as $ca)
                     <li class="nav-item">
                         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="{{ "#".$ca->asignatura.$ca->id }}"
                             aria-expanded="true" aria-controls="{{ $ca->asignatura.$ca->id }}">
-                            <i class="fas fa-book"></i>
+                            <i class="fas fa-book text-warning"></i>
                             <span>{{ $ca->asignatura }} </span>
                         </a>
                         <div id="{{ $ca->asignatura.$ca->id }}" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
@@ -139,7 +139,7 @@
                 @endforeach
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url('profesor-chat/'.$clase_asignaturas[0]->idclase) }}">
-                        <i class="far fa-comments"></i>
+                        <i class="far fa-comments text-light"></i>
                         <span>Chat</span></a>
                 </li>     
             @endif
@@ -163,7 +163,7 @@
                         <li class="nav-item">
                             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="{{ "#".$ca->asignatura.$ca->id }}"
                                 aria-expanded="true" aria-controls="{{ $ca->asignatura.$ca->id }}">
-                                <i class="fas fa-book"></i>
+                                <i class="fas fa-book text-warning"></i>
                                 <span>{{ $ca->asignatura }} </span>
                             </a>
                             <div id="{{ $ca->asignatura.$ca->id }}" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
@@ -180,7 +180,7 @@
                     @endforeach
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url('alumno-chat/'.$alumno_clase[0]->idclase) }}">
-                            <i class="far fa-comments"></i>
+                            <i class="far fa-comments text-light"></i>
                             <span>Chat</span></a>
                     </li>       
             @endif

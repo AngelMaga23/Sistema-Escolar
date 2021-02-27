@@ -5,7 +5,7 @@
 
     <div class="col-xl-10 col-lg-12 col-md-9">
 
-        <div class="card o-hidden border-0 shadow-lg my-5">
+        <div class="card o-hidden border-0 shadow-lg my-5" style="border-radius: 36px !important;">
             <div class="card-body p-0">
                 <!-- Nested Row within Card Body -->
                 <div class="row">
@@ -52,7 +52,7 @@
                                         </span>
                                     @enderror
                                 </div>
-                                <div class="form-group">
+                                {{-- <div class="form-group">
                                     <div class="custom-control custom-checkbox small">
                                         <input 
                                             type="checkbox" 
@@ -64,8 +64,18 @@
                                         <label class="custom-control-label" for="customCheck">Remember
                                             Me</label>
                                     </div>
-                                </div>
-                                <button type="submit" class="btn btn-primary btn-user btn-block">Iniciar sesión</button>
+                                </div> --}}
+                                <button 
+                                    type="submit" 
+                                    class="btn btn-primary btn-user btn-block"
+                                    style="
+                                        background: slategrey;
+                                        border-color: #000;
+                                        border: 1px solid #fff;
+                                    "
+                                >
+                                    Iniciar sesión
+                                </button>
 
 
                             </form>
