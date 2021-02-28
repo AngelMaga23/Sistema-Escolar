@@ -25,6 +25,7 @@
 
     <link href="{{ asset('css/sb-admin-2.min.css') }}" rel="stylesheet">
     <link href="{{ asset('vendor/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
 
 </head>
 
@@ -130,6 +131,7 @@
 
     <script src="{{ asset('js/demo/datatables-demo.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/easytimer@1.1.1/dist/easytimer.min.js"></script>
+    
     @yield('custom_script')
 </body>
 
