@@ -220,6 +220,19 @@ function Archivos(dato) {
     });
 }
 
+function Comentarios(dato) {
+    var options = {
+        modal: true,
+        height: 300,
+        width: 600
+    };
+
+    $('#coments_content_modal').html('<div class="preloader"><img src="../../img/91.gif" alt="loading" width="50" height="50" /><br/></div>');
+    $('#coments_content_modal').load('../../coments/' + dato, function () {
+        $('#coments').modal({ show: true });
+    });
+}
+
 function Delete_File(id) {
     swal({
         title: "Eliminar archivo",

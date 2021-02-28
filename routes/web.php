@@ -105,6 +105,7 @@ Route::post('update_publicacion',[AnuncioController::class, 'update']);
 Route::post('public_delete', [AnuncioController::class, 'destroy']);
 
 Route::get('archivo-publics/{id}',[AnuncioController::class, 'index_files_public']);
+Route::get('coments/{id}',[AnuncioController::class, 'index_coments']);
 Route::post('index_files', [AnuncioController::class, 'index_archivos']);
 Route::post('guardar_archivos',[AnuncioController::class, 'Save_files']);
 Route::post('file_delete', [AnuncioController::class, 'destroy_file']);

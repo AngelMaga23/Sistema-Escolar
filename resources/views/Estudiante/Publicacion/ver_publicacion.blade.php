@@ -1,6 +1,10 @@
 @extends('layouts.panel')
 
 @section('content')
+@php
+    $archivos = DB::table('archivos')->where('idpublicacion',$publicacion[0]->id)->get();
+@endphp
+
 <div class="card shadow">
     <div class="card-header border-0">
         <div class="row align-items-center d-flex justify-content-end">
@@ -29,6 +33,35 @@
                 {!!html_entity_decode($publicacion[0]->descripcion)!!}
             </div>
         </div>
+
+        @if (!$archivos->isEmpty())
+            <div class="row">
+                <div class="col-md-12">
+                    <h5><small>Archivos</small></h5>
+                    <div class="row">
+                        @foreach ($archivos as $a)
+                            <div class="col-md-2">
+                                <div class="card border-left-dark shadow h-100 py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-dark text-uppercase mb-1">{{ $a->nombre }}</div>
+                                            </div>
+                                            @if ($a->archivo != null)
+                                                <div class="col-auto">
+                                                    <a href="{{ asset('Archivos/'.$a->archivo) }}"><i class="fas fa-file-download"></i></a>
+                                                </div>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+        @endif
+
 
     </div>
     <div class="card-footer">

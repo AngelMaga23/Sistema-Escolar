@@ -311,5 +311,10 @@ class AnuncioController extends Controller
         }
     }
 
+    public function index_coments($id)
+    {
+        return view('Anuncio.Modal.comentarios',compact('id'));
+    }
+
 
 }
