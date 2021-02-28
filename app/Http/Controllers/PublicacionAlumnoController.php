@@ -62,6 +62,9 @@ class PublicacionAlumnoController extends Controller
 
     public function verPublicacion($id)
     {
+        $iduser = Auth::id();
+        $bandera = false;
+
         $publicacion = DB::table('publicacions as p')
             ->select(DB::raw('p.id,p.nombre,p.descripcion,p.created_at,tp.nombre as tipo,c.nombre as nom_clase,a.nombre as asignatura,m.primer_nom,m.segundo_nom,m.apellido_p,m.apellido_m,p.idclase_asig'))
             ->join('tipo_publicacions as tp', 'p.idtipo', '=', 'tp.id')
@@ -72,7 +75,28 @@ class PublicacionAlumnoController extends Controller
             ->where('p.id', $id)
             ->get();
 
-        return view('Estudiante.Publicacion.ver_publicacion', compact('publicacion'));
+    
+            $alumno = DB::table('alumnos as a')
+                ->select(DB::raw('a.iduser'))
+                ->join('alumno_clase as ac', 'ac.idalumno', '=', 'a.id')
+                ->join('clase_asignatura as ca', 'ca.idclase', '=', 'ac.idclase')
+                ->where('ca.id', '=', $publicacion[0]->idclase_asig)
+                ->get();
+    
+            // dd($alumno);
+            foreach ($alumno as $a) {
+                if ($a->iduser == $iduser) {
+                    $bandera = true;
+                    break;
+                }
+            }
+    
+            if($bandera){
+                return view('Estudiante.Publicacion.ver_publicacion', compact('publicacion'));
+            }else{
+                abort(403, 'No puedes acceder.');
+            }
+
     }
 
     public function Comentarios(Request $request)

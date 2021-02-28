@@ -61,7 +61,30 @@ class EvaluacionAlumnoController extends Controller
 
     public function verEvaluacion($id)
     {
-        return view('Estudiante.Evaluacion.verEvaluacion',compact('id'));
+        $iduser = Auth::id();
+        $bandera = false;
+
+        $alumno = DB::table('alumnos as a')
+            ->select(DB::raw('a.iduser'))
+            ->join('alumno_clase as ac', 'ac.idalumno', '=', 'a.id')
+            ->join('clase_asignatura as ca', 'ca.idclase', '=', 'ac.idclase')
+            ->where('ca.id', '=', $id)
+            ->get();
+
+        // dd($alumno);
+        foreach ($alumno as $a) {
+            if ($a->iduser == $iduser) {
+                $bandera = true;
+                break;
+            }
+        }
+
+        if($bandera){
+            return view('Estudiante.Evaluacion.verEvaluacion',compact('id'));
+        }else{
+            abort(403, 'No puedes acceder.');
+        }
+
     }
 
     public function Description_Test(Request $request)

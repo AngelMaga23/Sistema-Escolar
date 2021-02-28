@@ -61,6 +61,9 @@ class TareaAlumnoController extends Controller
 
     public function verTarea($id)
     {
+        $iduser = Auth::id();
+        $bandera = false;
+
         $tarea = DB::table('tareas as t')
             ->select(DB::raw('t.id,t.nombre,t.descripcion,t.archivo,t.estatu,t.fecha_ini,t.fecha_fin,t.idclase_asig,c.nombre as nom_clase,a.nombre as asignatura,m.primer_nom,m.segundo_nom,m.apellido_p,m.apellido_m'))
             ->join('clase_asignatura as ca', 't.idclase_asig', '=', 'ca.id')
@@ -70,7 +73,28 @@ class TareaAlumnoController extends Controller
             ->where('t.id', $id)
             ->get();
 
-        return view('Estudiante.Tarea.verTarea', compact('tarea'));
+            $alumno = DB::table('alumnos as a')
+                ->select(DB::raw('a.iduser'))
+                ->join('alumno_clase as ac', 'ac.idalumno', '=', 'a.id')
+                ->join('clase_asignatura as ca', 'ca.idclase', '=', 'ac.idclase')
+                ->where('ca.id', '=', $tarea[0]->idclase_asig)
+                ->get();
+    
+            // dd($alumno);
+            foreach ($alumno as $a) {
+                if ($a->iduser == $iduser) {
+                    $bandera = true;
+                    break;
+                }
+            }
+    
+            if($bandera){
+                return view('Estudiante.Tarea.verTarea', compact('tarea'));
+            }else{
+                abort(403, 'No puedes acceder.');
+            }
+
+
     }
 
     public function Tarea_Options(Request $request)
