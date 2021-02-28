@@ -10,7 +10,7 @@
 
 
     <title>{{ config('app.name') }}</title>
-
+    <link rel="icon" type="image/x-icon" href="{{ asset('img/logo_escuela.ico') }}"/>
     <!-- Custom fonts for this template-->
     <link href="{{ asset('vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
     <link
@@ -131,9 +131,9 @@
 
     <script src="{{ asset('js/demo/datatables-demo.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/easytimer@1.1.1/dist/easytimer.min.js"></script>
-    <script type='text/javascript'>
+    {{-- <script type='text/javascript'>
         document.oncontextmenu = function(){return false}
-    </script>
+    </script> --}}
     @yield('custom_script')
 </body>
 
