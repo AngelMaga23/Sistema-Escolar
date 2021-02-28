@@ -131,9 +131,10 @@
 
     <script src="{{ asset('js/demo/datatables-demo.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/easytimer@1.1.1/dist/easytimer.min.js"></script>
-    {{-- <script type='text/javascript'>
+
+    <script type='text/javascript'>
         document.oncontextmenu = function(){return false}
-    </script> --}}
+    </script>
     @yield('custom_script')
 </body>
 
