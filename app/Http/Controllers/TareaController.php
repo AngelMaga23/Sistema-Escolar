@@ -67,8 +67,29 @@ class TareaController extends Controller
     public function create($id)
     {
         $idclase_a = $id;
+        $iduser = Auth::id();
+        $bandera = false;
 
-        return view('Tareas.create', compact('idclase_a'));
+        $maestro = DB::table('maestros as m')
+                        ->select(DB::raw('m.iduser'))
+                        ->join('clase_asignatura as ca','ca.idmaestro','=','m.id')
+                        ->where('ca.id','=',$idclase_a)
+                        ->get();
+
+        // dd($maestro);
+        foreach ($maestro as $m) {
+            if($m->iduser == $iduser)
+            {
+                $bandera = true;
+                break;
+            }
+        }
+        if($bandera){
+            return view('Tareas.create', compact('idclase_a'));
+        }else{
+            abort(403, 'No puedes acceder.');
+        }
+
     }
 
     /**
@@ -134,8 +155,29 @@ class TareaController extends Controller
     public function edit($id)
     {
         $tarea = DB::table('tareas')->where('id', $id)->get();
+        $iduser = Auth::id();
+        $bandera = false;
 
-        return view('Tareas.edit', compact('tarea'));
+        $maestro = DB::table('maestros as m')
+                        ->select(DB::raw('m.iduser'))
+                        ->join('clase_asignatura as ca','ca.idmaestro','=','m.id')
+                        ->where('ca.id','=',$tarea[0]->idclase_asig)
+                        ->get();
+
+        // dd($maestro);
+        foreach ($maestro as $m) {
+            if($m->iduser == $iduser)
+            {
+                $bandera = true;
+                break;
+            }
+        }
+        if($bandera){
+            return view('Tareas.edit', compact('tarea'));
+        }else{
+            abort(403, 'No puedes acceder.');
+        }
+
     }
 
     /**

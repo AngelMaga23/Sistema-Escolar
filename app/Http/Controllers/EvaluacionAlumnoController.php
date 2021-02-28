@@ -15,7 +15,29 @@ class EvaluacionAlumnoController extends Controller
     public function index($id)
     {
         $idclase = $id;
-        return view('Estudiante.Evaluacion.index',compact('idclase'));
+        $iduser = Auth::id();
+        $bandera = false;
+
+        $alumno = DB::table('alumnos as a')
+        ->select(DB::raw('a.iduser'))
+        ->join('alumno_clase as ac', 'ac.idalumno', '=', 'a.id')
+        ->join('clase_asignatura as ca', 'ca.idclase', '=', 'ac.idclase')
+        ->where('ca.id', '=', $idclase)
+        ->get();
+
+        foreach ($alumno as $a) {
+            if ($a->iduser == $iduser) {
+                $bandera = true;
+                break;
+            }
+        }
+
+        if($bandera){
+            return view('Estudiante.Evaluacion.index',compact('idclase'));
+        }else{
+            abort(403, 'No puedes acceder a estas evaluaciones.');
+        }
+
     }
 
     public function index_evaluacion_clase(Request $request)

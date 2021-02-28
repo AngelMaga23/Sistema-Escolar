@@ -21,9 +21,30 @@ class ChatAlumnoController extends Controller
     public function index($id)
     {
         $idclase = $id;
+        $iduser = Auth::id();
+        $bandera = false;
+
+        $alumno = DB::table('alumnos as a')
+        ->select(DB::raw('a.iduser'))
+        ->join('alumno_clase as ac', 'ac.idalumno', '=', 'a.id')
+        ->join('clase_asignatura as ca', 'ca.idclase', '=', 'ac.idclase')
+        ->where('ca.idclase', '=', $idclase)
+        ->get();
+
+        foreach ($alumno as $a) {
+            if ($a->iduser == $iduser) {
+                $bandera = true;
+                break;
+            }
+        }
+
+        if($bandera){
+            return view('Estudiante.Chat.index', compact('idclase'));
+        }else{
+            abort(403, 'No puedes acceder a este chat.');
+        }
 
 
-        return view('Estudiante.Chat.index', compact('idclase'));
     }
 
     public function Content_Chat(Request $request)

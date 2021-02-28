@@ -10,7 +10,7 @@
             <div class="col text-right">
             <a href="{{ url('publicacion/'.$idclase_a.'/create') }}" class="btn btn-sm btn-success">
                     Nueva publicacion
-                </a>
+            </a>
             </div>
         </div>
     </div>

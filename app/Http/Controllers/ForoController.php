@@ -66,8 +66,29 @@ class ForoController extends Controller
     public function create($id)
     {
         $idclase_a = $id;
+        $iduser = Auth::id();
+        $bandera = false;
 
-        return view('Foro.create', compact('idclase_a'));
+        $maestro = DB::table('maestros as m')
+                        ->select(DB::raw('m.iduser'))
+                        ->join('clase_asignatura as ca','ca.idmaestro','=','m.id')
+                        ->where('ca.id','=',$idclase_a)
+                        ->get();
+
+        // dd($maestro);
+        foreach ($maestro as $m) {
+            if($m->iduser == $iduser)
+            {
+                $bandera = true;
+                break;
+            }
+        }
+        if($bandera){
+            return view('Foro.create', compact('idclase_a'));
+        }else{
+            abort(403, 'No puedes acceder.');
+        }
+
     }
 
     /**
@@ -118,8 +139,29 @@ class ForoController extends Controller
     public function edit($id)
     {
         $foro = Foro::find($id);
+        $iduser = Auth::id();
+        $bandera = false;
 
-        return view('Foro.edit', compact('foro'));
+        $maestro = DB::table('maestros as m')
+                        ->select(DB::raw('m.iduser'))
+                        ->join('clase_asignatura as ca','ca.idmaestro','=','m.id')
+                        ->where('ca.id','=',$foro->idclase_asig)
+                        ->get();
+
+        // dd($maestro);
+        foreach ($maestro as $m) {
+            if($m->iduser == $iduser)
+            {
+                $bandera = true;
+                break;
+            }
+        }
+        if($bandera){
+            return view('Foro.edit', compact('foro'));
+        }else{
+            abort(403, 'No puedes acceder.');
+        }
+
     }
 
     /**

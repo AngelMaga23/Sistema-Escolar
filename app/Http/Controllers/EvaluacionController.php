@@ -69,8 +69,29 @@ class EvaluacionController extends Controller
     public function create($id)
     {
         $idclase_a = $id;
+        $iduser = Auth::id();
+        $bandera = false;
 
-        return view('Evaluacion.create',compact('idclase_a'));
+        $maestro = DB::table('maestros as m')
+                        ->select(DB::raw('m.iduser'))
+                        ->join('clase_asignatura as ca','ca.idmaestro','=','m.id')
+                        ->where('ca.id','=',$idclase_a)
+                        ->get();
+
+        // dd($maestro);
+        foreach ($maestro as $m) {
+            if($m->iduser == $iduser)
+            {
+                $bandera = true;
+                break;
+            }
+        }
+        if($bandera){
+            return view('Evaluacion.create',compact('idclase_a'));
+        }else{
+            abort(403, 'No puedes acceder.');
+        }
+ 
     }
 
     /**
@@ -128,8 +149,29 @@ class EvaluacionController extends Controller
     public function edit($id)
     {
         $evaluacion = DB::table('examens')->where('id',$id)->get();
+        $iduser = Auth::id();
+        $bandera = false;
 
-        return view('Evaluacion.edit',compact('evaluacion'));
+        $maestro = DB::table('maestros as m')
+                        ->select(DB::raw('m.iduser'))
+                        ->join('clase_asignatura as ca','ca.idmaestro','=','m.id')
+                        ->where('ca.id','=',$evaluacion[0]->idclase_asig)
+                        ->get();
+
+        // dd($maestro);
+        foreach ($maestro as $m) {
+            if($m->iduser == $iduser)
+            {
+                $bandera = true;
+                break;
+            }
+        }
+        if($bandera){
+            return view('Evaluacion.edit',compact('evaluacion'));
+        }else{
+            abort(403, 'No puedes acceder.');
+        }
+
     }
 
     /**

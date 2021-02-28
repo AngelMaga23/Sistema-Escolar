@@ -72,10 +72,31 @@ class AnuncioController extends Controller
     public function create($id)
     {
         $idclase_a = $id;
+        $iduser = Auth::id();
+        $bandera = false;
 
-        $tipo = DB::table('tipo_publicacions')->get();
+        $maestro = DB::table('maestros as m')
+                        ->select(DB::raw('m.iduser'))
+                        ->join('clase_asignatura as ca','ca.idmaestro','=','m.id')
+                        ->where('ca.id','=',$idclase_a)
+                        ->get();
 
-        return view('Anuncio.create',compact('idclase_a','tipo','idclase_a'));
+        // dd($maestro);
+        foreach ($maestro as $m) {
+            if($m->iduser == $iduser)
+            {
+                $bandera = true;
+                break;
+            }
+        }
+        if($bandera){
+            $tipo = DB::table('tipo_publicacions')->get();
+
+            return view('Anuncio.create',compact('idclase_a','tipo','idclase_a'));
+        }else{
+            abort(403, 'No puedes acceder.');
+        }
+
     }
 
     /**
@@ -130,8 +151,29 @@ class AnuncioController extends Controller
     {
         $publicacion = Publicacion::find($id);
         $tipo = DB::table('tipo_publicacions')->get();
+        $iduser = Auth::id();
+        $bandera = false;
 
-        return view('Anuncio.edit',compact('publicacion','tipo'));
+        $maestro = DB::table('maestros as m')
+                        ->select(DB::raw('m.iduser'))
+                        ->join('clase_asignatura as ca','ca.idmaestro','=','m.id')
+                        ->where('ca.id','=',$publicacion->idclase_asig)
+                        ->get();
+
+        // dd($maestro);
+        foreach ($maestro as $m) {
+            if($m->iduser == $iduser)
+            {
+                $bandera = true;
+                break;
+            }
+        }
+        if($bandera){
+            return view('Anuncio.edit',compact('publicacion','tipo'));
+        }else{
+            abort(403, 'No puedes acceder.');
+        }
+
     }
 
     /**
