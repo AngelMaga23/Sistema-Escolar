@@ -32,9 +32,13 @@
                     <div class="form-row">
                         <input type="hidden" name="idclase" value="{{ $evaluacion[0]->idclase_asig }}">
                         <input type="hidden" name="ideval" value="{{ $evaluacion[0]->id }}">
-                        <div class="form-group col-md-12">
+                        <div class="form-group col-md-6">
                             <label for="nombre_eval">Nombre</label>
                             <input type="text" name="nombre_eval" id="nombre_eval" class="form-control" value="{{ $evaluacion[0]->nombre }}" required>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="pass_eval">Contraseña</label>
+                            <input type="text" name="pass_eval" id="pass_eval" class="form-control" value="{{ $evaluacion[0]->contrasena }}" required>
                         </div>
                     </div>
                     <div class="form-row">

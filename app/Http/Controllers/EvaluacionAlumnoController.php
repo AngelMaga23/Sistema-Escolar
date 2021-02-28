@@ -95,37 +95,54 @@ class EvaluacionAlumnoController extends Controller
         return view('Estudiante.Evaluacion.descripcion',compact('examen','preguntas_count'));
     }
 
+    public function Test_Password(Request $request)
+    {
+        $examen = DB::table('examens')->where('id',$request->id)->get();
+        return view('Estudiante.Evaluacion.password',compact('examen'));
+    }
+
     public function Start_Test(Request $request)
     {
         $idexamen = $request->id;
-        $examen = DB::table('examens')->where('id',$idexamen)->get();
-        $preguntas = DB::table('preguntas')->where('idexamen',$idexamen)->get();
+        $password = $request->password;
 
-        $id = Auth::id();
-        $alumno = DB::table('alumnos')->where('iduser',$id)->get();
-        $alumno_clase = DB::table('alumno_clase')->where('idalumno',$alumno[0]->id)->get();
+        $examen = DB::table('examens')->where('id',$idexamen)->where('contrasena',$password)->get();
 
-        $check_exam_alumno = DB::table('examen_alumno')->where('idexamen',$idexamen)->where('idalumnoclase',$alumno_clase[0]->id)->get();
-
-        if($check_exam_alumno->isEmpty())
+        if(!$examen->isEmpty())
         {
-            $exam_alumno = DB::table('examen_alumno')->insertGetId([
-                "idexamen" => $idexamen,
-                "idalumnoclase" => $alumno_clase[0]->id,
-                "puntos" => 0.00,
-                "restante" => $examen[0]->duracion,
-                "estatu" => '1',
-                "created_at" => date('Y-m-d H:i:s')
-            ]);
+            $preguntas = DB::table('preguntas')->where('idexamen',$idexamen)->get();
 
-            $alumno_clase = $exam_alumno;
-
+            $id = Auth::id();
+            $alumno = DB::table('alumnos')->where('iduser',$id)->get();
+            $alumno_clase = DB::table('alumno_clase')->where('idalumno',$alumno[0]->id)->get();
+    
+            $check_exam_alumno = DB::table('examen_alumno')->where('idexamen',$idexamen)->where('idalumnoclase',$alumno_clase[0]->id)->get();
+    
+            if($check_exam_alumno->isEmpty())
+            {
+                $exam_alumno = DB::table('examen_alumno')->insertGetId([
+                    "idexamen" => $idexamen,
+                    "idalumnoclase" => $alumno_clase[0]->id,
+                    "puntos" => 0.00,
+                    "restante" => $examen[0]->duracion,
+                    "estatu" => '1',
+                    "created_at" => date('Y-m-d H:i:s')
+                ]);
+    
+                $alumno_clase = $exam_alumno;
+    
+            }else{
+                $alumno_clase = $check_exam_alumno[0]->id;
+            }
+    
+            return view('Estudiante.Evaluacion.evaluacion',compact('idexamen','examen','preguntas','alumno_clase'));
         }else{
-            $alumno_clase = $check_exam_alumno[0]->id;
+            return response()->json([
+                "message" => "no"
+            ]);
         }
 
 
-        return view('Estudiante.Evaluacion.evaluacion',compact('idexamen','examen','preguntas','alumno_clase'));
     }
 
     public function End_Test(Request $request)

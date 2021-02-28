@@ -107,6 +107,7 @@ class EvaluacionController extends Controller
             DB::table('examens')->insert([
 
                 "nombre"  => $request->nombre_eval,
+                "contrasena"  => $request->pass_eval,
                 "descripcion" => $request->descripcion,
                 "estatu"  => $request->estatu_eval,
                 "fecha_ini" => $request->fecha_ini,
@@ -189,6 +190,7 @@ class EvaluacionController extends Controller
             DB::table('examens')->where('id',$request->ideval)->update([
 
                 "nombre"  => $request->nombre_eval,
+                "contrasena"  => $request->pass_eval,
                 "descripcion" => $request->descripcion,
                 "estatu"  => $request->estatu_eval,
                 "fecha_ini" => $request->fecha_ini,

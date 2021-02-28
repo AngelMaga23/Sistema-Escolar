@@ -18,11 +18,11 @@ function Description_test()
     });
 }
 
-function start_test()
+function Password_Test()
 {
     var idexamen = document.getElementById('idexamen').value;
     $.ajax({
-        url: '../../start_test',
+        url: '../../pass_test',
         type: 'post',
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -34,6 +34,34 @@ function start_test()
         success:function(response)
         {
             $('#id_content_evaluacion').html(response);
+        },
+    });
+}
+
+function start_test()
+{
+    var idexamen = document.getElementById('idexamen').value;
+    var password = document.getElementById('pass_test').value;
+    $.ajax({
+        url: '../../start_test',
+        type: 'post',
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        data: {
+            "id":idexamen,
+            "password":password
+        },
+
+        success:function(response)
+        {
+            if(response.message == 'no')
+            {
+                message_errorU("Contraseña incorrecta");
+            }else{
+                $('#id_content_evaluacion').html(response);
+            }
+            
         },
     });
 }
