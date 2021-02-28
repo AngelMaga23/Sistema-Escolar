@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Publicacion;
 use App\Models\Archivo;
+use Illuminate\Support\Facades\Auth;
 
 class AnuncioController extends Controller
 {
@@ -17,7 +18,30 @@ class AnuncioController extends Controller
     public function index($id)
     {
         $idclase_a = $id;
-        return view('Anuncio.index',compact('idclase_a'));
+        $iduser = Auth::id();
+        $bandera = false;
+
+        $maestro = DB::table('maestros as m')
+                        ->select(DB::raw('m.iduser'))
+                        ->join('clase_asignatura as ca','ca.idmaestro','=','m.id')
+                        ->where('ca.id','=',$idclase_a)
+                        ->get();
+
+        // dd($maestro);
+        foreach ($maestro as $m) {
+            if($m->iduser == $iduser)
+            {
+                $bandera = true;
+                break;
+            }
+        }
+        if($bandera)
+        {
+            return view('Anuncio.index',compact('idclase_a'));
+        }else{
+            abort(403, 'No puedes acceder a estas publicaciones.');
+        }
+        
     }
 
     public function index_publics_maestro(Request $request)

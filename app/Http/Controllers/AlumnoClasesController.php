@@ -4,18 +4,49 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Maestro;
+use App\Models\User;
 
 class AlumnoClasesController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    public function __construct()
+    {
+        $this->middleware(['auth','role:Profesor']);
+    }
+
     public function index($id)
     {
+        
+        $iduser = Auth::id();
         $idclase = $id;
-        return view('Alumnos-clase.index',compact('idclase'));
+        $bandera = false;
+
+        $maestro = DB::table('maestros as m')
+                        ->select(DB::raw('m.iduser'))
+                        ->join('clase_asignatura as ca','ca.idmaestro','=','m.id')
+                        ->where('ca.idclase','=',$idclase)
+                        ->get();
+
+        // dd($maestro);
+        foreach ($maestro as $m) {
+            if($m->iduser == $iduser)
+            {
+                $bandera = true;
+                break;
+            }
+        }
+        if($bandera)
+        {
+            return view('Alumnos-clase.index',compact('idclase'));
+        }else{
+            abort(403, 'No puedes acceder a esta clase.');
+        }
+
+
+        // $user = User::find(Auth::id());
+        // $this->authorize('alumnos',$user,$maestro[0]);
+        
     }
 
     public function index_alumnos_clase(Request $request)

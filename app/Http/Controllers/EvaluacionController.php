@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Examen;
+use Illuminate\Support\Facades\Auth;
 
 class EvaluacionController extends Controller
 {
@@ -15,7 +16,29 @@ class EvaluacionController extends Controller
     public function index($id)
     {
         $idclase_a = $id;
-        return view('Evaluacion.index',compact('idclase_a'));
+        $iduser = Auth::id();
+        $bandera = false;
+
+        $maestro = DB::table('maestros as m')
+            ->select(DB::raw('m.iduser'))
+            ->join('clase_asignatura as ca', 'ca.idmaestro', '=', 'm.id')
+            ->where('ca.id', '=', $idclase_a)
+            ->get();
+
+        foreach ($maestro as $m) {
+            if ($m->iduser == $iduser) {
+                $bandera = true;
+                break;
+            }
+        }
+
+        if($bandera){
+            return view('Evaluacion.index',compact('idclase_a'));
+        }else{
+            abort(403, 'No puedes acceder a estas evaluaciones.');
+        }
+
+
     }
 
     public function index_evaluacion(Request $request)

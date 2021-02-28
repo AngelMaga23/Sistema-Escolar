@@ -11,30 +11,51 @@ class TareaController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['auth','role:Profesor']);
+        $this->middleware(['auth', 'role:Profesor']);
     }
     public function index($id)
     {
         $idclase_a = $id;
-        return view('Tareas.index',compact('idclase_a'));
+        $iduser = Auth::id();
+        $bandera = false;
+
+        $maestro = DB::table('maestros as m')
+            ->select(DB::raw('m.iduser'))
+            ->join('clase_asignatura as ca', 'ca.idmaestro', '=', 'm.id')
+            ->where('ca.id', '=', $idclase_a)
+            ->get();
+
+        foreach ($maestro as $m) {
+            if ($m->iduser == $iduser) {
+                $bandera = true;
+                break;
+            }
+        }
+
+        if($bandera)
+        {
+            return view('Tareas.index', compact('idclase_a'));
+        }else{
+            abort(403, 'No puedes acceder a estas tareas.');
+        }
+
+
     }
 
     public function index_tareas_maestro(Request $request)
     {
-        if($request->ajax())
-        {
+        if ($request->ajax()) {
             $tareas_asig = DB::table('tareas as t')
-                            ->select(DB::raw('t.id,t.nombre,t.descripcion,t.fecha_ini,t.fecha_fin,t.estatu'))
-                            ->where('t.idclase_asig',$request->idclase)
-                            ->get();
+                ->select(DB::raw('t.id,t.nombre,t.descripcion,t.fecha_ini,t.fecha_fin,t.estatu'))
+                ->where('t.idclase_asig', $request->idclase)
+                ->get();
 
             return datatables()->of($tareas_asig)
-                ->addColumn('action','Tareas.Options.options')
-                ->addColumn('descripcion','Tareas.Options.descripcion')
-                ->rawColumns(['action','descripcion'])
+                ->addColumn('action', 'Tareas.Options.options')
+                ->addColumn('descripcion', 'Tareas.Options.descripcion')
+                ->rawColumns(['action', 'descripcion'])
                 ->addIndexColumn()
-                ->make(true); 
-                            
+                ->make(true);
         }
     }
 
@@ -47,7 +68,7 @@ class TareaController extends Controller
     {
         $idclase_a = $id;
 
-        return view('Tareas.create',compact('idclase_a'));
+        return view('Tareas.create', compact('idclase_a'));
     }
 
     /**
@@ -60,12 +81,12 @@ class TareaController extends Controller
     {
         try {
 
-            if($request->hasFile('archivo')){
+            if ($request->hasFile('archivo')) {
 
                 $file = $request->file('archivo');
-                $namefile = time().$file->getClientOriginalName();
-                $file->move('Archivos',$namefile);
-            }else{
+                $namefile = time() . $file->getClientOriginalName();
+                $file->move('Archivos', $namefile);
+            } else {
                 $namefile = "";
             }
 
@@ -85,12 +106,11 @@ class TareaController extends Controller
             return response()->json([
                 "message" => "ok",
                 "data_id" => $request->idclase
-            ],200);
-                
+            ], 200);
         } catch (\Throwable $th) {
             return response()->json([
                 "message" => $th
-            ],200);
+            ], 200);
         }
     }
 
@@ -113,9 +133,9 @@ class TareaController extends Controller
      */
     public function edit($id)
     {
-        $tarea = DB::table('tareas')->where('id',$id)->get();
+        $tarea = DB::table('tareas')->where('id', $id)->get();
 
-        return view('Tareas.edit',compact('tarea'));
+        return view('Tareas.edit', compact('tarea'));
     }
 
     /**
@@ -129,19 +149,19 @@ class TareaController extends Controller
     {
         try {
 
-            $tarea = DB::table('tareas')->where('id',$request->idtarea)->get();
+            $tarea = DB::table('tareas')->where('id', $request->idtarea)->get();
 
-            if($request->hasFile('archivo')){
+            if ($request->hasFile('archivo')) {
 
                 $file = $request->file('archivo');
-                $namefile = time().$file->getClientOriginalName();
-                $file->move('Archivos',$namefile);
-            }else{
+                $namefile = time() . $file->getClientOriginalName();
+                $file->move('Archivos', $namefile);
+            } else {
 
                 $namefile = $tarea[0]->archivo;
             }
 
-            DB::table('tareas')->where('id',$request->idtarea)->update([
+            DB::table('tareas')->where('id', $request->idtarea)->update([
 
                 "nombre"  => $request->nombre,
                 "descripcion" => $request->descripcion,
@@ -154,12 +174,11 @@ class TareaController extends Controller
             return response()->json([
                 "message" => "ok",
                 "data_id" => $request->idclase
-            ],200);
-                
+            ], 200);
         } catch (\Throwable $th) {
             return response()->json([
                 "message" => $th
-            ],200);
+            ], 200);
         }
     }
 
@@ -179,57 +198,55 @@ class TareaController extends Controller
 
             return response()->json([
                 "message" => "ok"
-            ],200);
+            ], 200);
         } catch (\Throwable $th) {
             return response()->json([
                 "message" => $th
-            ],200);
+            ], 200);
         }
     }
 
     public function Entregas($id)
     {
-        $tarea = DB::table('tareas')->where('id',$id)->get();
+        $tarea = DB::table('tareas')->where('id', $id)->get();
         $idclase_a = $tarea[0]->idclase_asig;
-        return view('Tareas.entregas',compact('id','idclase_a'));
+        return view('Tareas.entregas', compact('id', 'idclase_a'));
     }
 
     public function Entregas_index(Request $request)
     {
-        if($request->ajax())
-        {
+        if ($request->ajax()) {
             $entregas = DB::table('entregas as e')
                 ->select(DB::raw('e.id,e.nombre,e.archivo,e.descripcion,e.calificacion,e.estatu,e.created_at,a.primer_nom,a.segundo_nom,a.apellido_p,a.apellido_m'))
-                ->join('alumno_clase as ac','e.idalumno_clase','=','ac.id')
-                ->join('alumnos as a','ac.idalumno','=','a.id')
-                ->where('e.idtarea',$request->idtarea)
+                ->join('alumno_clase as ac', 'e.idalumno_clase', '=', 'ac.id')
+                ->join('alumnos as a', 'ac.idalumno', '=', 'a.id')
+                ->where('e.idtarea', $request->idtarea)
                 ->get();
 
             return datatables()->of($entregas)
-                ->addColumn('alumno','Tareas.Options_entregas.alumno')
-                ->addColumn('action','Tareas.Options_entregas.options')
-                ->addColumn('estatu','Tareas.Options_entregas.estatu')
-                ->rawColumns(['action','estatu','alumno'])
+                ->addColumn('alumno', 'Tareas.Options_entregas.alumno')
+                ->addColumn('action', 'Tareas.Options_entregas.options')
+                ->addColumn('estatu', 'Tareas.Options_entregas.estatu')
+                ->rawColumns(['action', 'estatu', 'alumno'])
                 ->addIndexColumn()
-                ->make(true); 
-            
+                ->make(true);
         }
     }
 
     public function Entrega($id)
     {
-        $entrega = DB::table('entregas')->where('id',$id)->get();
+        $entrega = DB::table('entregas')->where('id', $id)->get();
 
         $tarea = DB::table('tareas as t')
             ->select(DB::raw('t.id,t.nombre,t.descripcion,t.archivo,t.estatu,t.fecha_ini,t.fecha_fin,t.idclase_asig,c.nombre as nom_clase,a.nombre as asignatura,m.primer_nom,m.segundo_nom,m.apellido_p,m.apellido_m'))
-            ->join('clase_asignatura as ca','t.idclase_asig','=','ca.id')
-            ->join('clases as c','ca.idclase','=','c.id')
-            ->join('maestros as m','ca.idmaestro','=','m.id')
-            ->join('asignaturas as a','ca.idasignatura','=','a.id')
-            ->where('t.id',$entrega[0]->idtarea)
+            ->join('clase_asignatura as ca', 't.idclase_asig', '=', 'ca.id')
+            ->join('clases as c', 'ca.idclase', '=', 'c.id')
+            ->join('maestros as m', 'ca.idmaestro', '=', 'm.id')
+            ->join('asignaturas as a', 'ca.idasignatura', '=', 'a.id')
+            ->where('t.id', $entrega[0]->idtarea)
             ->get();
 
-        return view('Tareas.Options_entregas.Modal.index',compact('tarea','entrega'));
+        return view('Tareas.Options_entregas.Modal.index', compact('tarea', 'entrega'));
     }
 
     public function Add_Coment_Entrega(Request $request)
@@ -237,7 +254,7 @@ class TareaController extends Controller
         try {
 
             $id = Auth::id();
-            $maestro = DB::table('maestros')->where('iduser',$id)->get();
+            $maestro = DB::table('maestros')->where('iduser', $id)->get();
 
             DB::table('coment_entregas')->insert([
 
@@ -251,7 +268,6 @@ class TareaController extends Controller
             return response()->json([
                 "message" => "ok"
             ]);
-
         } catch (\Throwable $th) {
             return response()->json([
                 "message" => $th
@@ -263,12 +279,11 @@ class TareaController extends Controller
     {
         try {
 
-            DB::table('coment_entregas')->where('id',$request->id)->delete();
+            DB::table('coment_entregas')->where('id', $request->id)->delete();
 
             return response()->json([
                 "message" => "ok"
             ]);
-
         } catch (\Throwable $th) {
             return response()->json([
                 "message" => $th
@@ -278,16 +293,16 @@ class TareaController extends Controller
 
     public function Calificacion($id)
     {
-        $entrega = DB::table('entregas')->where('id',$id)->get();
+        $entrega = DB::table('entregas')->where('id', $id)->get();
 
-        return view('Tareas.Options_entregas.Modal.calificacion',compact('entrega'));
+        return view('Tareas.Options_entregas.Modal.calificacion', compact('entrega'));
     }
 
     public function Calificar(Request $request)
     {
         try {
 
-            DB::table('entregas')->where('id',$request->identrega)->update([
+            DB::table('entregas')->where('id', $request->identrega)->update([
 
                 "calificacion" => $request->cal,
                 "estatu" => '0',
@@ -297,12 +312,10 @@ class TareaController extends Controller
             return response()->json([
                 "message" => "ok"
             ]);
-
         } catch (\Throwable $th) {
             return response()->json([
                 "message" => $th
             ]);
         }
     }
-
 }

@@ -13,6 +13,11 @@ class ChatAlumnoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function __construct()
+    {
+        $this->middleware(['auth','role:Alumno']);
+    }
+
     public function index($id)
     {
         $idclase = $id;

@@ -5,35 +5,56 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Foro;
+use Illuminate\Support\Facades\Auth;
 
 class ForoController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['auth','role:Profesor']);
+        $this->middleware(['auth', 'role:Profesor']);
     }
     public function index($id)
     {
         $idclase_a = $id;
-        return view('Foro.index',compact('idclase_a'));
+        $iduser = Auth::id();
+        $bandera = false;
+
+        $maestro = DB::table('maestros as m')
+            ->select(DB::raw('m.iduser'))
+            ->join('clase_asignatura as ca', 'ca.idmaestro', '=', 'm.id')
+            ->where('ca.id', '=', $idclase_a)
+            ->get();
+
+        foreach ($maestro as $m) {
+            if ($m->iduser == $iduser) {
+                $bandera = true;
+                break;
+            }
+        }
+
+        if($bandera)
+        {
+            return view('Foro.index', compact('idclase_a'));
+        }else{
+            abort(403, 'No puedes acceder a estos foros.');
+        }
+ 
     }
 
     public function index_foros(Request $request)
     {
-        if($request->ajax())
-        {
+        if ($request->ajax()) {
             $foros_asign = DB::table('foros as f')
-                            ->select(DB::raw('f.id,f.nombre,f.descripcion,f.idclase_asig'))
-                            ->where('f.idclase_asig',$request->idclase)
-                            ->get();
+                ->select(DB::raw('f.id,f.nombre,f.descripcion,f.idclase_asig'))
+                ->where('f.idclase_asig', $request->idclase)
+                ->get();
 
             return datatables()->of($foros_asign)
-                ->addColumn('action','Foro.Options.options')
-                ->addColumn('descripcion','Foro.Options.descripcion')
-                ->rawColumns(['action','descripcion'])
+                ->addColumn('action', 'Foro.Options.options')
+                ->addColumn('descripcion', 'Foro.Options.descripcion')
+                ->rawColumns(['action', 'descripcion'])
                 ->addIndexColumn()
-                ->make(true); 
-                            
+                ->make(true);
         }
     }
 
@@ -46,7 +67,7 @@ class ForoController extends Controller
     {
         $idclase_a = $id;
 
-        return view('Foro.create',compact('idclase_a'));
+        return view('Foro.create', compact('idclase_a'));
     }
 
     /**
@@ -69,12 +90,11 @@ class ForoController extends Controller
             return response()->json([
                 "message" => "ok",
                 "data_id" => $request->idclase
-            ],200);
-
+            ], 200);
         } catch (\Throwable $th) {
             return response()->json([
                 "message" => $th
-            ],200);
+            ], 200);
         }
     }
 
@@ -99,7 +119,7 @@ class ForoController extends Controller
     {
         $foro = Foro::find($id);
 
-        return view('Foro.edit',compact('foro'));
+        return view('Foro.edit', compact('foro'));
     }
 
     /**
@@ -113,7 +133,7 @@ class ForoController extends Controller
     {
         try {
 
-            DB::table('foros')->where('id',$request->idforo)->update([
+            DB::table('foros')->where('id', $request->idforo)->update([
                 "nombre" => $request->nombre,
                 "descripcion" => $request->descripcion,
             ]);
@@ -121,11 +141,11 @@ class ForoController extends Controller
             return response()->json([
                 "message" => "ok",
                 "data_id" => $request->idclase
-            ],200);
+            ], 200);
         } catch (\Throwable $th) {
             return response()->json([
                 "message" => $th
-            ],200);
+            ], 200);
         }
     }
 
@@ -145,11 +165,11 @@ class ForoController extends Controller
 
             return response()->json([
                 "message" => "ok"
-            ],200);
+            ], 200);
         } catch (\Throwable $th) {
             return response()->json([
                 "message" => $th
-            ],200);
+            ], 200);
         }
     }
 }

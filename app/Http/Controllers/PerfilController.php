@@ -31,14 +31,14 @@ class PerfilController extends Controller
         }elseif($user->hasRole('Profesor')){
 
             $usuario = DB::table('users')->where('id',$iduser)->get();
-            $detalle = DB::table('maestros')->where('iduser',$usuario[0]->id)->get();
+            $detalle = DB::table('maestros')->where('iduser',$iduser)->get();
             $idcuenta = $detalle[0]->id;
 
             return view('Perfil.index',compact('usuario','detalle','idcuenta'));
         }elseif($user->hasRole('Alumno')){
 
             $usuario = DB::table('users')->where('id',$iduser)->get();
-            $detalle = DB::table('alumnos')->where('iduser',$usuario[0]->id)->get();
+            $detalle = DB::table('alumnos')->where('iduser',$iduser)->get();
             $idcuenta = $detalle[0]->id;
 
             return view('Perfil.index',compact('usuario','detalle','idcuenta'));
