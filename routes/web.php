@@ -197,6 +197,7 @@ Route::get('ver-resultado/{id}',[EvaluacionAlumnoController::class, 'Resultado']
 Route::post('description_test',[EvaluacionAlumnoController::class, 'Description_Test']);
 Route::post('pass_test',[EvaluacionAlumnoController::class, 'Test_Password']);
 Route::post('start_test',[EvaluacionAlumnoController::class, 'Start_Test']);
+Route::post('continue_test',[EvaluacionAlumnoController::class, 'Continue_Test']);
 
 Route::post('end_test',[EvaluacionAlumnoController::class, 'End_Test']);
 Route::post('update_time_test',[EvaluacionAlumnoController::class, 'Update_Time_Test']);

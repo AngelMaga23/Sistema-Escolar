@@ -42,7 +42,7 @@
                             &nbsp
                             @if(!$exam_alumno->isEmpty())
                                 @if ($exam_alumno[0]->estatu)
-                                    <button class="btn btn-warning" onclick="start_test()">Continuar</button>
+                                    <button class="btn btn-warning" onclick="continue_test()">Continuar</button>
                                 @else
                                     <a href="{{ url('ver-resultado/'.$exam_alumno[0]->id) }}" class="btn btn-info">Calificación</a>
                                 @endif

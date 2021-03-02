@@ -145,6 +145,42 @@ class EvaluacionAlumnoController extends Controller
 
     }
 
+    public function Continue_Test(Request $request)
+    {
+        $idexamen = $request->id;
+
+        $examen = DB::table('examens')->where('id',$idexamen)->get();
+
+        $preguntas = DB::table('preguntas')->where('idexamen',$idexamen)->get();
+
+        $id = Auth::id();
+        $alumno = DB::table('alumnos')->where('iduser',$id)->get();
+        $alumno_clase = DB::table('alumno_clase')->where('idalumno',$alumno[0]->id)->get();
+
+        $check_exam_alumno = DB::table('examen_alumno')->where('idexamen',$idexamen)->where('idalumnoclase',$alumno_clase[0]->id)->get();
+
+        if($check_exam_alumno->isEmpty())
+        {
+            $exam_alumno = DB::table('examen_alumno')->insertGetId([
+                "idexamen" => $idexamen,
+                "idalumnoclase" => $alumno_clase[0]->id,
+                "puntos" => 0.00,
+                "restante" => $examen[0]->duracion,
+                "estatu" => '1',
+                "created_at" => date('Y-m-d H:i:s')
+            ]);
+
+            $alumno_clase = $exam_alumno;
+
+        }else{
+            $alumno_clase = $check_exam_alumno[0]->id;
+        }
+
+        return view('Estudiante.Evaluacion.evaluacion',compact('idexamen','examen','preguntas','alumno_clase'));
+
+
+    }
+
     public function End_Test(Request $request)
     {   
         $idans = array();
