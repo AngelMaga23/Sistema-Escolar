@@ -259,7 +259,7 @@ class TareaController extends Controller
     {
         if ($request->ajax()) {
             $entregas = DB::table('entregas as e')
-                ->select(DB::raw('e.id,e.nombre,e.archivo,e.descripcion,e.calificacion,e.estatu,e.created_at,a.primer_nom,a.segundo_nom,a.apellido_p,a.apellido_m'))
+                ->select(DB::raw('e.id,e.nombre,e.archivo,e.descripcion,e.calificacion,e.estatu,e.created_at,e.reenviar,a.primer_nom,a.segundo_nom,a.apellido_p,a.apellido_m'))
                 ->join('alumno_clase as ac', 'e.idalumno_clase', '=', 'ac.id')
                 ->join('alumnos as a', 'ac.idalumno', '=', 'a.id')
                 ->where('e.idtarea', $request->idtarea)
@@ -360,4 +360,24 @@ class TareaController extends Controller
             ]);
         }
     }
+
+    public function Reenviar(Request $request)
+    {
+        try {
+
+            DB::table('entregas')->where('id', $request->id)->update([
+
+                "reenviar" => '1',
+            ]);
+
+            return response()->json([
+                "message" => "ok"
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                "message" => $th
+            ]);
+        }
+    }
+
 }

@@ -32,6 +32,25 @@
         </i>
     </button>
 
+    @if ($reenviar)
+        <button
+            class="btn btn-datatable btn-icon btn-transparent-dark mr-2" 
+            disabled
+        >
+        
+        <i class="fas fa-reply"></i>
+    </button>
+    @else
+        <button
+            class="btn btn-datatable btn-icon btn-transparent-dark mr-2" 
+            onclick="HabilitarReenvio({{ $id }})"
+        >
+            
+            <i class="fas fa-reply"></i>
+        </button>
+    @endif
+
+
 </td>
 
 <script>

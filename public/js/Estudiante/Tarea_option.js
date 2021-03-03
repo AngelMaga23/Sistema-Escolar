@@ -59,6 +59,25 @@ function Delete_entrega(id)
 	    });
 }
 
+function Reenviar(id) {
+
+    $.ajax({
+        url: '../../ver_reenvio',
+        type: 'post',
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        data: {
+            "id":id
+        },
+
+        success:function(response)
+        {
+            $('#id_footer_tarea').html(response);
+        },
+    });
+}
+
 $(document).ready(function () {
 
     Tarea_Options();

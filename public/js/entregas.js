@@ -217,6 +217,45 @@ function Calificar()
     });
 }
 
+function HabilitarReenvio(id){
+    swal({
+        title: "Habilitar reenvío",
+        text: "¿Estás seguro?",
+        icon: "warning",
+        buttons: ["Cancelar", "Continuar"],
+        dangerMode: true,
+    })
+        .then((willDelete) => {
+            if (willDelete) {
+
+                $.ajax({
+                    url: '../../reenvio',
+                    type: 'post',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    data: {
+                        "id": id
+                    },
+
+                    success: function (response) {
+                        if (response.message == "ok") {
+                            // message_succesfully_Tarea_delete();
+                            $('#entregas_table').DataTable().ajax.reload();
+                        }
+
+                        else {
+                            message_errorU(response.message);
+                        }
+                    },
+                });
+            }
+            else {
+                // swal("Operación cancelada.");
+            }
+        });
+}
+
 $(document).ready(function () {
     Table_Entregas();
 

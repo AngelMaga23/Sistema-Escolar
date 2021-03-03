@@ -130,6 +130,8 @@ function Delete_Tarea(id) {
         });
 }
 
+
+
 $(document).ready(function () {
     Table_Tareas();
 

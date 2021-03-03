@@ -130,6 +130,7 @@ class TareaAlumnoController extends Controller
                 "archivo" => $namefile,
                 "calificacion" => 0,
                 "estatu" => 1,
+                "reenviar" => '0',
                 "idalumno_clase" => $alumno_clase[0]->id,
                 "idtarea" => $request->idtarea,
                 "created_at" => date('Y-m-d H:i:s')
@@ -158,6 +159,53 @@ class TareaAlumnoController extends Controller
             }
 
             DB::table('entregas')->where('id', $request->id)->delete();
+
+            return response()->json([
+                "message" => "ok"
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                "message" => $th
+            ]);
+        }
+    }
+
+    public function VerReenvio(Request $request)
+    {
+        $entrega = DB::table('entregas')->where('id',$request->id)->get();
+        return view('Estudiante.Tarea.reenvio', compact('entrega'));
+    }
+
+    public function Reenviar_Tarea(Request $request)
+    {
+        try {
+
+            $entrega = DB::table('entregas')->where('id',$request->identrega)->get();
+
+            if ($request->hasFile('fileEntrega')) {
+
+                $file = $request->file('fileEntrega');
+                $namefile = time() . $file->getClientOriginalName();
+                $file->move('Archivos', $namefile);
+                if($entrega[0]->archivo != null)
+                {
+                    $file_path = 'Archivos/'.$entrega[0]->archivo;
+                    unlink($file_path);
+                }
+
+            } else {
+                $namefile = $entrega[0]->archivo;
+            }
+
+            DB::table('entregas')->where('id',$request->identrega)->update([
+
+                "nombre" => $request->nom_entrega,
+                "descripcion" => $request->entrega_descripcion,
+                "archivo" => $namefile,
+                "estatu" => 1,
+                "reenviar" => '0',
+                "created_at" => date('Y-m-d H:i:s')
+            ]);
 
             return response()->json([
                 "message" => "ok"

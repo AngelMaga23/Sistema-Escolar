@@ -13,10 +13,13 @@
                             <a href="{{ asset('Archivos/'.$entrega[0]->archivo) }}" class="card-link">Descargar <i class="fas fa-file-download"></i></a>
                         </div>
                     @endif
+                    
+                    @if ($entrega[0]->reenviar)
+                        <div style="text-align: right;">
+                            <button class="btn btn-datatable btn-icon btn-transparent-dark" onclick="Reenviar({{ $entrega[0]->id }})">Modificar <i class="far fa-edit"></i></button>
+                        </div>
+                    @endif
 
-                    <div style="text-align: right;">
-                        <button class="btn btn-datatable btn-icon btn-transparent-dark" onclick="Delete_entrega({{ $entrega[0]->id }})">Eliminar <i class="far fa-trash-alt"></i></button>
-                    </div>
                 </div>
                 <div class="card-body">
                     {{ $entrega[0]->descripcion }}

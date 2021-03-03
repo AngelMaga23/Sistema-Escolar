@@ -128,6 +128,7 @@ Route::post('del_comente_entrega',[TareaController::class, 'Del_Coment_Entrega']
 
 Route::get('calificacion/{id}',[TareaController::class, 'Calificacion']);
 Route::post('calificar',[TareaController::class, 'Calificar']);
+Route::post('reenvio',[TareaController::class, 'Reenviar']);
 
 /** Foro */
 
@@ -187,6 +188,8 @@ Route::get('ver-tarea/{id}',[TareaAlumnoController::class, 'verTarea']);
 Route::post('tarea_options',[TareaAlumnoController::class, 'Tarea_Options']);
 Route::post('send_tarea',[TareaAlumnoController::class, 'Send_Tarea']);
 Route::post('del_entrega',[TareaAlumnoController::class, 'Del_Entrega']);
+Route::post('send_reenvio',[TareaAlumnoController::class, 'Reenviar_Tarea']);
+Route::post('ver_reenvio',[TareaAlumnoController::class, 'VerReenvio']);
 
 /** Evaluacion */
 Route::get('alumno-evaluacion/{id}',[EvaluacionAlumnoController::class, 'index']);
