@@ -40,7 +40,9 @@
                         <div class="col-md-4"></div>
                         <div class="col-md-4"></div>
                         <div class="col-md-4 d-flex justify-content-end">
-                            <a href="{{ url('alumno-evaluacion/'.$examen[0]->idclase_asig) }}" class="btn btn-danger">Regresar</a>
+                            <a href="{{ url('alumno-evaluacion/'.$examen[0]->idclase_asig) }}" class="btn btn-danger">Regresar</a> 
+                            &nbsp
+                            <a href="{{ url('ver-resultado-evaluacion/'.$id_examen_alumno) }}" class="btn btn-primary">Respuestas</a>
                         </div>
                     </div>
                 </div>

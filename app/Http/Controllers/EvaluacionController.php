@@ -405,7 +405,7 @@ class EvaluacionController extends Controller
         if($request->ajax())
         {
             $eval_alumno = DB::table('examen_alumno as e')
-                ->select(DB::raw('a.primer_nom,a.segundo_nom,a.apellido_p,a.apellido_m,e.puntos,e.restante'))
+                ->select(DB::raw('a.primer_nom,a.segundo_nom,a.apellido_p,a.apellido_m,e.puntos,e.restante,e.tarde,e.updated_at'))
                 ->join('alumno_clase as ac','e.idalumnoclase','=','ac.id')
                 ->join('alumnos as a','ac.idalumno','=','a.id')
                 ->where('e.idexamen',$request->idclase)
@@ -413,7 +413,8 @@ class EvaluacionController extends Controller
 
             return datatables()->of($eval_alumno)
                 ->addColumn('nombre','Evaluacion.Alumnos.Options.nombre')
-                ->rawColumns(['nombre'])
+                ->addColumn('tarde','Evaluacion.Alumnos.Options.tarde')
+                ->rawColumns(['nombre','tarde'])
                 ->addIndexColumn()
                 ->make(true); 
         }

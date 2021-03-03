@@ -25,6 +25,8 @@
                         <th>Nombre</th>
                         <th>Puntos obtenidos</th>
                         <th>Tiempo <small>(Restante)</small></th>
+                        <th>Retardo</th>
+                        <th>Fecha de finalización</th>
                     </tr>
                 </thead>
 

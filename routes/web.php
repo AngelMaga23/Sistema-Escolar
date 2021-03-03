@@ -193,6 +193,7 @@ Route::get('alumno-evaluacion/{id}',[EvaluacionAlumnoController::class, 'index']
 Route::post('alumno_evaluacion_index',[EvaluacionAlumnoController::class, 'index_evaluacion_clase']);
 Route::get('ver-evaluacion/{id}',[EvaluacionAlumnoController::class, 'verEvaluacion']);
 Route::get('ver-resultado/{id}',[EvaluacionAlumnoController::class, 'Resultado']);
+Route::get('ver-resultado-evaluacion/{id}',[EvaluacionAlumnoController::class, 'Resultado_evaluacion']);
 
 Route::post('description_test',[EvaluacionAlumnoController::class, 'Description_Test']);
 Route::post('pass_test',[EvaluacionAlumnoController::class, 'Test_Password']);
@@ -222,3 +223,5 @@ Route::post('content_chats',[ChatAlumnoController::class, 'Content_Chat']);
 Route::post('student_information',[ChatAlumnoController::class, 'Student_Information']);
 Route::get('get-chat',[ChatAlumnoController::class, 'GetChat']);
 Route::post('insert_chat',[ChatAlumnoController::class, 'Insert_Chat']);
+
+Route::get('prueba_fecha',[EvaluacionAlumnoController::class, 'Prueba']);

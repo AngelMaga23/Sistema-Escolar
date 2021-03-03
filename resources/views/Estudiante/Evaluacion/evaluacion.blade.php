@@ -124,31 +124,6 @@ label.radio input:checked+span {
     </div>
 </div>
 
-<script>
-        // $('#form_examen_start').on('submit', function (e) {
-        //     e.preventDefault();
-        //     $.ajax({
-        //         type: 'post',
-        //         url: '../end_test',
-        //         data: new FormData(this),
-        //         contentType: false,
-        //         cache: false,
-        //         processData: false,
-        //         success: function (response) {
-        //             // console.log(response);
-        //             if (response.message == 'ok') {
-                        
-
-        //             }
-        //             else {
-        //                 console.log('f');
-        //                 message_errorU(response.message);
-        //             }
-        //         }
-        //     });
-        // });
-
-</script>
 
 
 <script>

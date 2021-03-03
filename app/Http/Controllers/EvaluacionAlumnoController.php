@@ -126,6 +126,7 @@ class EvaluacionAlumnoController extends Controller
                     "puntos" => 0.00,
                     "restante" => $examen[0]->duracion,
                     "estatu" => '1',
+                    "tarde" => '0',
                     "created_at" => date('Y-m-d H:i:s')
                 ]);
     
@@ -204,11 +205,15 @@ class EvaluacionAlumnoController extends Controller
         }
 
         $exam_alumno = DB::table('examen_alumno')->where('id',$request->alumnoclase)->get();
+        $examen = DB::table('examens')->where('id',$exam_alumno[0]->idexamen)->get();
+        $fecha_end = date('Y-m-d H:i:s');
 
         DB::table('examen_alumno')->where('id',$request->alumnoclase)->update([
             "restante" => $exam_alumno[0]->restante,
             "estatu"   => '0',
-            "puntos"   => $sum_puntos
+            "puntos"   => $sum_puntos,
+            "updated_at" => $fecha_end,
+            "tarde"    => $this->validar_rango($examen[0]->fecha_ini,$examen[0]->fecha_fin,$fecha_end),
         ]);
 
         return view('Estudiante.Evaluacion.result',compact('id_examen_alumno'));
@@ -234,8 +239,77 @@ class EvaluacionAlumnoController extends Controller
 
     public function Resultado($id)
     {
+        $iduser = Auth::id();
+        $bandera = false;
         $id_examen_alumno = $id;
-        return view('Estudiante.Evaluacion.result',compact('id_examen_alumno'));
+        $exam_alumno = DB::table('examen_alumno')->where('id',$id_examen_alumno)->get();
+
+        $alumno = DB::table('alumnos as a')
+        ->select(DB::raw('a.iduser'))
+        ->join('alumno_clase as ac', 'ac.idalumno', '=', 'a.id')
+        ->where('ac.id', '=', $exam_alumno[0]->idalumnoclase)
+        ->get();
+
+        // dd($alumno);
+        foreach ($alumno as $a) {
+            if ($a->iduser == $iduser) {
+                $bandera = true;
+                break;
+            }
+        }
+
+        if($bandera){
+            return view('Estudiante.Evaluacion.result',compact('id_examen_alumno'));
+        }else{
+            abort(403, 'No puedes acceder.');
+        }
+
+    }
+
+    public function Resultado_evaluacion($id)
+    {
+        $iduser = Auth::id();
+        $bandera = false;
+        $alumno_clase = $id;
+        $exam_alumno = DB::table('examen_alumno')->where('id',$alumno_clase)->get();
+
+        $alumno = DB::table('alumnos as a')
+            ->select(DB::raw('a.iduser'))
+            ->join('alumno_clase as ac', 'ac.idalumno', '=', 'a.id')
+            ->where('ac.id', '=', $exam_alumno[0]->idalumnoclase)
+            ->get();
+
+        // dd($alumno);
+        foreach ($alumno as $a) {
+            if ($a->iduser == $iduser) {
+                $bandera = true;
+                break;
+            }
+        }
+
+        if($bandera){
+
+            return view('Estudiante.Evaluacion.result_eval',compact('alumno_clase'));
+        }else{
+            abort(403, 'No puedes acceder.');
+        }
+
+    }
+
+    public function Prueba()
+    {
+        // $he = $this->validar_rango('2021-03-01 09:00:00','2021-03-01 10:00:00','2021-03-01 10:01:00');
+        return $this->validar_rango('2021-03-01 09:00:00','2021-03-01 10:00:00','2021-03-01 10:01:00');
+    }
+
+    public function validar_rango($date_inicio, $date_fin, $date_nueva)
+    {
+        $date_inicio = strtotime($date_inicio);
+        $date_fin = strtotime($date_fin);
+        $date_nueva = strtotime($date_nueva);
+        if (($date_nueva >= $date_inicio) && ($date_nueva <= $date_fin))
+            return 0;
+        return 1;
     }
 
     /**

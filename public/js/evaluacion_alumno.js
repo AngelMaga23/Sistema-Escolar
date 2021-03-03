@@ -77,6 +77,14 @@ function TableEvaluacion() {
             {
                 data: 'restante',
                 name: 'restante'
+            },
+            {
+                data: 'tarde',
+                name: 'tarde'
+            },
+            {
+                data:'updated_at',
+                name:'updated_at'
             }
         ]
     });
