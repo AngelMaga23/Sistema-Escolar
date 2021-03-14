@@ -47,7 +47,10 @@
                                     <a href="{{ url('ver-resultado/'.$exam_alumno[0]->id) }}" class="btn btn-info">Calificación</a>
                                 @endif
                             @else
-                                <button class="btn btn-primary" onclick="Password_Test()">Comenzar</button>
+                                @if ($examen[0]->estatu)
+                                    <button class="btn btn-primary" onclick="Password_Test()">Comenzar</button>
+                                @endif
+                                
                             @endif
 
                         </div>
