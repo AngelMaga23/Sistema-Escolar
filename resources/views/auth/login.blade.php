@@ -42,7 +42,7 @@
                                         class="form-control form-control-user @error('password') is-invalid @enderror"
                                         id="password" 
                                         name="password"
-                                        placeholder="Contreña"
+                                        placeholder="Contraseña"
                                         required 
                                         autocomplete="current-password"
                                     >
