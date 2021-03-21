@@ -64,11 +64,14 @@ class EvaluacionAlumnoController extends Controller
         $iduser = Auth::id();
         $bandera = false;
 
+        $examen = DB::table('examens')->where('id',$id)->get();
+        // $id = $examen[0]->idclase_asig;
+
         $alumno = DB::table('alumnos as a')
             ->select(DB::raw('a.iduser'))
             ->join('alumno_clase as ac', 'ac.idalumno', '=', 'a.id')
             ->join('clase_asignatura as ca', 'ca.idclase', '=', 'ac.idclase')
-            ->where('ca.id', '=', $id)
+            ->where('ca.id', '=', $examen[0]->idclase_asig)
             ->get();
 
         // dd($alumno);
@@ -207,13 +210,15 @@ class EvaluacionAlumnoController extends Controller
         $exam_alumno = DB::table('examen_alumno')->where('id',$request->alumnoclase)->get();
         $examen = DB::table('examens')->where('id',$exam_alumno[0]->idexamen)->get();
         $fecha_end = date('Y-m-d H:i:s');
+        $tarde = $this->validar_rango($examen[0]->fecha_ini,$examen[0]->fecha_fin,$fecha_end);
+        
 
         DB::table('examen_alumno')->where('id',$request->alumnoclase)->update([
             "restante" => $exam_alumno[0]->restante,
             "estatu"   => '0',
             "puntos"   => $sum_puntos,
             "updated_at" => $fecha_end,
-            "tarde"    => $this->validar_rango($examen[0]->fecha_ini,$examen[0]->fecha_fin,$fecha_end),
+            "tarde"    => $tarde,
         ]);
 
         return view('Estudiante.Evaluacion.result',compact('id_examen_alumno'));
